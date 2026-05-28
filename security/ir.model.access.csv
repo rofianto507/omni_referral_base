@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_commission_rule_user,commission.rule.user,model_commission_rule,omni_referral_base.group_omni_referral_user,1,0,0,0
+access_commission_rule_manager,commission.rule.manager,model_commission_rule,omni_referral_base.group_omni_referral_manager,1,1,1,1
+access_referral_member_user,referral.member.user,model_referral_member,omni_referral_base.group_omni_referral_user,1,1,1,0
+access_referral_member_manager,referral.member.manager,model_referral_member,omni_referral_base.group_omni_referral_manager,1,1,1,1
+access_referral_commission_user,referral.commission.user,model_referral_commission,omni_referral_base.group_omni_referral_user,1,0,0,0
+access_referral_commission_manager,referral.commission.manager,model_referral_commission,omni_referral_base.group_omni_referral_manager,1,1,1,1

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_referral_member_list" model="ir.ui.view">
+            <field name="name">referral.member.list</field>
+            <field name="model">referral.member</field>
+            <field name="arch" type="xml">
+                <list string="Members" >
+                    <field name="member_code"/>
+                    <field name="partner_id"/>
+                    <field name="sponsor_id"/>
+                    <field name="join_date"/>
+                    <field name="state"
+                        widget="badge"
+                        decoration-muted="state == 'draft'"
+                        decoration-success="state == 'active'"
+                        decoration-warning="state == 'suspended'"
+                        decoration-danger="state == 'terminated'"/>
+                    <field name="downline_count"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_referral_member_form" model="ir.ui.view">
+            <field name="name">referral.member.form</field>
+            <field name="model">referral.member</field>
+            <field name="arch" type="xml">
+                <form string="Member">
+                     <header>
+                        <button name="action_activate" type="object" string="Activate"
+                                invisible="state != 'draft'" class="btn-primary"/>
+                        <button name="action_suspend" type="object" string="Suspend"
+                                invisible="state != 'active'"/>
+                        <button name="action_reactivate" type="object" string="Reactivate"
+                                invisible="state != 'suspended'" class="btn-primary"/>
+                        <button name="action_terminate" type="object" string="Terminate"
+                                invisible="state == 'terminated'" confirm="Member cannot be reactivated. Are you sure?"/>
+                        <button name="action_print_member_card"
+                                type="object"
+                                string="Print Member Card"
+                                class="btn-primary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,active,suspended,terminated"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="member_code" readonly="1"/>
+                                <field name="partner_id"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </group>
+                            <group>
+                                <field name="sponsor_id"/>
+                                <field name="join_date"/>
+                                <field name="downline_count" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Direct Downlines">
+                                <field name="downline_ids" readonly="1">
+                                    <list string="Downlines" >
+                                        <field name="member_code"/>
+                                        <field name="partner_id"/>
+                                        <field name="state" widget="badge"
+                                                decoration-muted="state == 'draft'"
+                                                decoration-success="state == 'active'"
+                                                decoration-warning="state == 'suspended'"
+                                                decoration-danger="state == 'terminated'"/>
+                                        <field name="join_date"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter>
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </chatter>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_referral_member_search" model="ir.ui.view">
+            <field name="name">referral.member.search</field>
+            <field name="model">referral.member</field>
+            <field name="arch" type="xml">
+                <search string="Search Members">
+                    <field name="member_code"/>
+                    <field name="partner_id"/>
+                    <field name="sponsor_id"/>
+                    <filter name="filter_active" string="Active" domain="[('state','=','active')]"/>
+                    <group >
+                        <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                        <filter name="group_sponsor" string="Sponsor" context="{'group_by': 'sponsor_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_referral_member" model="ir.actions.act_window">
+            <field name="name">Members</field>
+            <field name="res_model">referral.member</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_referral_member_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first member
+                </p>
+                <p>
+                    Register members and connect them with sponsors.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

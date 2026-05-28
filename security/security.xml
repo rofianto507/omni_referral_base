@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 1) Module category -->
+        <record id="module_category_omni_referral" model="ir.module.category">
+            <field name="name">Omni Referral</field>
+            <field name="description">Access levels for Omni Referral module</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- 2) Privilege header -->
+        <record id="privilege_omni_referral" model="res.groups.privilege">
+            <field name="name">Omni Referral Access</field>
+            <field name="category_id" ref="omni_referral_base.module_category_omni_referral"/>
+            <field name="sequence">1</field>
+        </record>
+
+        <!-- 3) User group -->
+        <record id="group_omni_referral_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="privilege_id" ref="omni_referral_base.privilege_omni_referral"/>
+        </record>
+
+        <!-- 4) Manager group -->
+        <record id="group_omni_referral_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="privilege_id" ref="omni_referral_base.privilege_omni_referral"/>
+            <field name="implied_ids" eval="[(4, ref('omni_referral_base.group_omni_referral_user'))]"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_omni_referral_root" 
+              name="Omni Referral" 
+              sequence="50" 
+              web_icon="omni_referral_base,static/description/icon.png"/>
+    <menuitem id="menu_referral_member_list"
+              name="Members"
+              parent="menu_omni_referral_root"
+              action="action_referral_member"
+              sequence="20"/>
+    <menuitem id="menu_referral_commission"
+              name="Commissions"
+              parent="menu_omni_referral_root"
+              action="action_referral_commission"
+              sequence="40"/>
+    <menuitem id="menu_referral_configuration"
+          name="Configuration"
+          parent="menu_omni_referral_root"
+          sequence="100"
+          groups="omni_referral_base.group_omni_referral_manager"/>
+    
+    <menuitem id="menu_commission_rule_action" 
+              name="Commission Rules" 
+              parent="menu_referral_configuration" 
+              action="action_commission_rule" 
+              sequence="10"/>
+    <menuitem id="menu_referral_settings" 
+              name="Settings" 
+              parent="menu_referral_configuration" 
+              action="action_omni_referral_settings" 
+              sequence="20"/>  
+</odoo>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_member_card_cr80" model="report.paperformat">
+        <field name="name">Member Card CR80</field>
+        <field name="format">custom</field>
+        <field name="page_width">86</field>
+        <field name="page_height">54</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="action_report_member_card" model="ir.actions.report">
+        <field name="name">Member Card</field>
+        <field name="model">referral.member</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">omni_referral_base.report_member_card</field>
+        <field name="paperformat_id" ref="paperformat_member_card_cr80"/>
+    </record>
+
+    <template id="report_member_card">
+        <t t-call="web.html_container">
+            <script type="text/javascript">
+                window.onload = function() { 
+                    // Delay printing to ensure the page is fully rendered
+                    setTimeout(function() { 
+                        window.print(); 
+                    }, 500);
+                };
+            </script>
+            <style>
+                @media print {
+                    @page {
+                        size: 85.6mm 53.98mm; /* Ukuran pas CR80 */
+                        margin: 0 !important;
+                    }
+                    body {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                        margin: 0 !important;
+                    }
+                }
+            </style>
+
+            <t t-foreach="docs" t-as="o">
+                <div style="page-break-after:always; width:85.6mm; height:53.98mm; box-sizing:border-box; padding:2.4mm; font-family:Arial,sans-serif; background:#fff;">
+                    <div style="width:100%; height:100%; border:1px solid #1f2937; border-radius:2.8mm; box-sizing:border-box; position:relative; overflow:hidden;">
+
+                        <div style="height:6.5mm; background:#111827; color:#fff; padding:1.6mm 2.6mm; box-sizing:border-box; display:flex; justify-content:space-between; align-items:center;">
+                            <div style="font-size:8.5pt; font-weight:700; letter-spacing:.3px;">MEMBER CARD</div>
+                            <div style="font-size:7pt; opacity:.95;" t-esc="user.company_id.name or ''"/>
+                        </div>
+
+                        <div style="padding:2.4mm 2.6mm 2.2mm 2.6mm; box-sizing:border-box; height:calc(100% - 6.5mm); display:flex; justify-content:space-between;">
+                            
+                            <div style="width:63%; padding-right:1.8mm; box-sizing:border-box;">
+                                <div t-if="user.company_id and user.company_id.logo" style="margin-bottom:1.5mm;">
+                                    <img t-att-src="image_data_uri(user.company_id.logo)" style="height:6mm; max-width:26mm; object-fit:contain;"/>
+                                </div>
+
+                                <div style="font-size:6.7pt; color:#6b7280;">Member Name</div>
+                                <div style="font-size:9.4pt; font-weight:700; color:#111827; line-height:1.2;" t-esc="o.partner_id.name or '-'"/>
+
+                                <div style="margin-top:1.4mm; font-size:6.7pt; color:#6b7280;">Member Code</div>
+                                <div style="font-size:9pt; font-weight:700; letter-spacing:.4px; color:#111827;" t-esc="o.member_code or '-'"/>
+
+                                <div style="margin-top:1.7mm; display:flex; gap:4mm;">
+                                    <div>
+                                        <div style="font-size:6.7pt; color:#6b7280;">Join Date</div>
+                                        <div style="font-size:7.8pt; color:#111827;" t-esc="o.join_date or '-'"/>
+                                    </div>
+                                    <div>
+                                        <div style="font-size:6.7pt; color:#6b7280;">Status</div>
+                                        <div style="font-size:7.8pt; color:#111827;" t-esc="dict(o._fields['state'].selection).get(o.state)"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="width:33%; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;">
+                                <img t-if="o.member_code" 
+                                     t-att-src="'/report/barcode/?barcode_type=QR&amp;value=%s&amp;width=220&amp;height=220' % (o.member_code)" 
+                                     style="width:22mm; height:22mm; margin:auto;"/>
+                                <div style="margin-top:1mm; font-size:6.4pt; color:#6b7280; word-break:break-all; line-height:1.1;" t-esc="o.member_code or ''"/>
+                            </div>
+                        </div>
+
+                        <div style="position:absolute; left:0; right:0; bottom:0; height:2.8mm; background:#f3f4f6; border-top:1px solid #e5e7eb; padding:0 2.6mm; display:flex; align-items:center; justify-content:space-between; box-sizing:border-box;">
+                            <span style="font-size:6pt; color:#6b7280;">Valid as Membership Identification</span>
+                            <span style="font-size:6pt; color:#9ca3af;" t-esc="user.company_id.website or ''"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

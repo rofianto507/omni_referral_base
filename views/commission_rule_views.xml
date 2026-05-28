@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_commission_rule_form" model="ir.ui.view">
+            <field name="name">commission.rule.form</field>
+            <field name="model">commission.rule</field>
+            <field name="arch" type="xml">
+                <form string="Commission Rule">
+                    <sheet>                    
+                        <group>
+                            <field name="level_depth" />
+                            <field name="commission_pct" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_commission_rule_list" model="ir.ui.view">
+            <field name="name">commission.rule.list</field>
+            <field name="model">commission.rule</field>
+            <field name="arch" type="xml">
+                <list string="Commission Rules">
+                    <field name="level_depth" />
+                    <field name="commission_pct" />
+                </list>
+            </field>
+        </record>
+
+        <record id="action_commission_rule" model="ir.actions.act_window">
+            <field name="name">Commission Rules</field>
+            <field name="res_model">commission.rule</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first commission rule!
+                </p>
+                <p>
+                    Define the depth level and commission percentage for your referral network.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

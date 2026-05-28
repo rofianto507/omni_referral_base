@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_referral_member" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.referral.member</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Referral Member" invisible="not is_referral_member">
+                    <group>
+                        <group>
+                          
+                            <field name="referral_member_code" readonly="1"/>
+                            <field name="referral_join_date" readonly="1"/>
+                            <field name="referral_sponsor_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="referral_member_id" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
