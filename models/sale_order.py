@@ -8,9 +8,12 @@ class SaleOrder(models.Model):
     referral_member_id = fields.Many2one(
         'referral.member',
         string='Referral Member',
-        help='Member yang melakukan pembelian / menjadi sumber referral',
+        help='Auto-filled referral member based on the selected customer. Commissions will be generated for this member and their uplines upon order confirmation.',
         domain="[('state', '=', 'active')]",
         tracking=True,
+        readonly=True,
+        store=True,
+        compute='_compute_referral_member_id',
     )
     referral_commission_ids = fields.One2many(
         'referral.commission',
@@ -21,6 +24,14 @@ class SaleOrder(models.Model):
         string='Commission Count',
         compute='_compute_referral_commission_count',
     )
+
+    @api.depends('partner_id')
+    def _compute_referral_member_id(self):
+        for order in self:
+            if order.partner_id and order.partner_id.referral_member_id:
+                order.referral_member_id = order.partner_id.referral_member_id
+            else:
+                order.referral_member_id = False
 
     def _compute_referral_commission_count(self):
         for rec in self:

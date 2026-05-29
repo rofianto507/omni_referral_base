@@ -9,7 +9,9 @@
             <!-- referral member field below customer -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="referral_member_id"
-                       options="{'no_create': True, 'no_open': True}"/>
+                       readonly="1"
+                       invisible="not referral_member_id"
+                       options="{'no_open': False}"/>
             </xpath>
 
             <!-- Smart button commission on header -->

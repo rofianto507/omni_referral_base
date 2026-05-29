@@ -6,7 +6,7 @@
     'category': 'Sales/Sales',
     'author': 'Sel Studio',
     'website': 'https://selstudio.id',
-    'depends': ['base', 'sale', 'mail'],
+    'depends': ['base', 'sale_management', 'mail','account'],
     'license': 'LGPL-3',
     'data': [
         'security/security.xml',
