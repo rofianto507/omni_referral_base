@@ -79,14 +79,46 @@ class ReferralMember(models.Model):
         string="Direct Downlines",
         compute="_compute_downline_count",
     )
+    commission_ids = fields.One2many(
+        'referral.commission',
+        'beneficiary_member_id',
+        string='Commissions',
+    )
     activated_at = fields.Datetime(readonly=True, tracking=True)
     suspended_at = fields.Datetime(readonly=True, tracking=True)
     terminated_at = fields.Datetime(readonly=True, tracking=True)
-
+    currency_id = fields.Many2one(
+        'res.currency',
+        string='Currency',
+        default=lambda self: self.env.company.currency_id,
+    )
+    commission_balance = fields.Monetary(
+        string="Commission Balance",
+        currency_field='currency_id',
+        compute='_compute_commission_balance',
+        store=True,
+        help='Total komisi yang sudah diapproved dan belum dicairkan',
+    )
     _sql_constraints = [
         ("uniq_member_code", "unique(member_code)", "Member Code must be unique."),
         ("uniq_partner_member", "unique(partner_id)", "Contact is already registered as a member."),
     ]
+    @api.depends(
+        'commission_ids.state',
+        'commission_ids.commission_amount',
+        'commission_ids.currency_id',
+    )
+    def _compute_commission_balance(self):
+        for rec in self:
+            approved = rec.commission_ids.filtered(lambda c: c.state == 'approved')
+            rec.commission_balance = sum(
+                c.currency_id._convert(
+                    c.commission_amount,
+                    rec.currency_id,
+                    rec.env.company,
+                    fields.Date.today(),
+                ) for c in approved
+            )
     @api.model_create_multi
     def create(self, vals_list):
         seq = self.env["ir.sequence"]

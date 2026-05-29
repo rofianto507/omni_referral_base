@@ -11,10 +11,13 @@
                 <field name="source_member_id"/>
                 <field name="beneficiary_member_id"/>
                 <field name="level_depth"/>
-                <field name="commission_pct"/>
+                <field name="commission_pct" string="Rate (%)"/>
                 <field name="base_amount"/>
                 <field name="commission_amount"/>
-                <field name="state"/>
+                <field name="state" widget="badge"
+                      decoration-muted="state == 'pending'"
+                      decoration-success="state == 'approved'"
+                      decoration-danger="state == 'rejected'"/>
             </list>
         </field>
     </record>
@@ -26,7 +29,13 @@
         <field name="arch" type="xml">
             <form string="Referral Commission">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,paid,cancel"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-success"
+                            invisible="state != 'pending'"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            class="btn-danger"
+                            invisible="state != 'pending'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,rejected"/>
                 </header>
                 <sheet>
                     <group>
@@ -46,6 +55,11 @@
                         </group>
                     </group>
                 </sheet>
+                    <chatter>
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </chatter>
             </form>
         </field>
     </record>

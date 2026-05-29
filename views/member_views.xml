@@ -54,6 +54,7 @@
                                 <field name="sponsor_id"/>
                                 <field name="join_date"/>
                                 <field name="downline_count" readonly="1"/>
+                                <field name="commission_balance" readonly="1"/>
                             </group>
                         </group>
 
@@ -69,6 +70,21 @@
                                                 decoration-warning="state == 'suspended'"
                                                 decoration-danger="state == 'terminated'"/>
                                         <field name="join_date"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Commissions">
+                                <field name="commission_ids" readonly="1">
+                                    <list string="Commissions">
+                                        <field name="sale_order_id"/>
+                                        <field name="source_member_id"/>
+                                        <field name="commission_pct" string="Rate (%)"/>
+                                        <field name="base_amount"/>
+                                        <field name="commission_amount" string="Amount"/>
+                                        <field name="state" widget="badge"
+                                                decoration-muted="state == 'pending'"
+                                                decoration-success="state == 'approved'"
+                                                decoration-danger="state == 'rejected'"/>
                                     </list>
                                 </field>
                             </page>
