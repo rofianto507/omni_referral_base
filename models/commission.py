@@ -19,8 +19,7 @@ class ReferralCommission(models.Model):
     state = fields.Selection([
         ('pending', 'Pending'),
         ('approved', 'Approved'),
-        ('paid', 'Paid'),
-        ('cancel', 'Cancelled'),
+        ('rejected', 'Rejected'),
     ], default='pending', required=True)
 
     _sql_constraints = [
