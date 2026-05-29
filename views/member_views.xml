@@ -38,6 +38,7 @@
                         <button name="action_print_member_card"
                                 type="object"
                                 string="Print Member Card"
+                                invisible="state != 'active'"
                                 class="btn-primary"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,active,suspended,terminated"/>
                     </header>

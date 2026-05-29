@@ -15,6 +15,7 @@
         'views/commission_rule_views.xml',
         'views/member_views.xml',
         'views/commission_views.xml',
+        'views/sale_order_views.xml',
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
         'views/menu.xml',

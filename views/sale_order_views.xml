@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_form_referral" model="ir.ui.view">
+        <field name="name">sale.order.form.referral</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- referral member field below customer -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="referral_member_id"
+                       options="{'no_create': True, 'no_open': True}"/>
+            </xpath>
+
+            <!-- Smart button commission on header -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_referral_commissions"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-percent"
+                        invisible="referral_commission_count == 0">
+                    <field name="referral_commission_count"
+                           string="Commissions"
+                           widget="statinfo"/>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
