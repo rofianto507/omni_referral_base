@@ -12,6 +12,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'wizard/withdraw_wizard_views.xml',
         'views/commission_rule_views.xml',
         'views/member_views.xml',
         'views/commission_views.xml',

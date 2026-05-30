@@ -6,7 +6,7 @@
         <field name="name">commission.withdraw.list</field>
         <field name="model">commission.withdraw</field>
         <field name="arch" type="xml">
-            <list string="Withdrawals" create="0">
+            <list string="Withdrawals">
                 <field name="name"/>
                 <field name="member_id"/>
                 <field name="date_request"/>

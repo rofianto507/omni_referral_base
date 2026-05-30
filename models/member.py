@@ -134,7 +134,7 @@ class ReferralMember(models.Model):
                 ) for c in approved
             )
             rec.commission_balance = total_approved - rec.commission_withdrawn
-            
+
     @api.model_create_multi
     def create(self, vals_list):
         seq = self.env["ir.sequence"]
@@ -212,4 +212,17 @@ class ReferralMember(models.Model):
             'name': 'Print Member Card',
             'url': url,
             'target': 'new',
+        }
+    
+    def action_withdraw(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Request Withdrawal'),
+            'res_model': 'withdraw.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_member_id': self.id,
+            },
         }

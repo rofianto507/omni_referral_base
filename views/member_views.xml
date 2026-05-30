@@ -35,6 +35,11 @@
                                 invisible="state != 'suspended'" class="btn-primary"/>
                         <button name="action_terminate" type="object" string="Terminate"
                                 invisible="state != 'suspended'" confirm="Member cannot be reactivated. Are you sure?"/>
+                        <button name="action_withdraw"
+                            type="object"
+                            string="Withdraw Commission"
+                            class="btn-warning"
+                            invisible="commission_balance &lt;= 0"/>
                         <button name="action_print_member_card"
                                 type="object"
                                 string="Print Member Card"
