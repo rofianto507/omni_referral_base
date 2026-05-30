@@ -34,7 +34,7 @@
                         <button name="action_reactivate" type="object" string="Reactivate"
                                 invisible="state != 'suspended'" class="btn-primary"/>
                         <button name="action_terminate" type="object" string="Terminate"
-                                invisible="state == 'terminated'" confirm="Member cannot be reactivated. Are you sure?"/>
+                                invisible="state != 'suspended'" confirm="Member cannot be reactivated. Are you sure?"/>
                         <button name="action_print_member_card"
                                 type="object"
                                 string="Print Member Card"
