@@ -6,7 +6,7 @@
         <field name="name">referral.commission.list</field>
         <field name="model">referral.commission</field>
         <field name="arch" type="xml">
-            <list string="Referral Commissions">
+            <list string="Referral Commissions" create="false" edit="false" delete="false">
                 <field name="sale_order_id"/>
                 <field name="source_member_id"/>
                 <field name="beneficiary_member_id"/>
@@ -92,6 +92,7 @@
         <field name="res_model">referral.commission</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_referral_commission_search"/>
+        <field name="context">{'create': False}</field>
     </record>
 
    
