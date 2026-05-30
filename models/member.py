@@ -111,11 +111,80 @@ class ReferralMember(models.Model):
         'member_id',
         string='Withdrawals',
     )
+    sale_order_ids = fields.One2many(
+        'sale.order',
+        'referral_member_id',
+        string='Sales Orders',
+    )
+    sale_order_count = fields.Integer(
+        string='Sales Orders',
+        compute='_compute_sale_order_count',
+    )
+    commission_count = fields.Integer(
+        string='Total Commissions',
+        compute='_compute_commission_count',
+    )
+    withdraw_count = fields.Integer(
+        string='Total Withdrawals',
+        compute='_compute_withdraw_count',
+    )
+    commission_total_earned = fields.Monetary(
+        string='Total Earned',
+        currency_field='currency_id',
+        compute='_compute_commission_summary',
+        store=True,
+        help='Commission total earned by the member. This includes all commissions regardless of their approval status.',
+    )
+    commission_total_pending = fields.Monetary(
+        string='Total Pending',
+        currency_field='currency_id',
+        compute='_compute_commission_summary',
+        store=True,
+        help='Commission total that is currently pending approval. This amount is not yet available for withdrawal.',
+    )
     _sql_constraints = [
         ("uniq_member_code", "unique(member_code)", "Member Code must be unique."),
         ("uniq_partner_member", "unique(partner_id)", "Contact is already registered as a member."),
     ]
+    
+    @api.depends('downline_ids')
+    def _compute_downline_count(self):
+        for rec in self:
+            rec.downline_count = len(rec.downline_ids)
 
+    def _compute_sale_order_count(self):
+        for rec in self:
+            rec.sale_order_count = len(rec.sale_order_ids)
+
+    def _compute_commission_count(self):
+        for rec in self:
+            rec.commission_count = len(rec.commission_ids)
+
+    def _compute_withdraw_count(self):
+        for rec in self:
+            rec.withdraw_count = len(rec.withdraw_ids)
+
+    @api.depends(
+        'commission_ids.state',
+        'commission_ids.commission_amount',
+        'commission_ids.currency_id',
+    )
+    def _compute_commission_summary(self):
+        for rec in self:
+            approved = rec.commission_ids.filtered(lambda c: c.state == 'approved')
+            pending = rec.commission_ids.filtered(lambda c: c.state == 'pending')
+            rec.commission_total_earned = sum(
+                c.currency_id._convert(
+                    c.commission_amount, rec.currency_id,
+                    rec.env.company, fields.Date.today(),
+                ) for c in approved
+            )
+            rec.commission_total_pending = sum(
+                c.currency_id._convert(
+                    c.commission_amount, rec.currency_id,
+                    rec.env.company, fields.Date.today(),
+                ) for c in pending
+            )
     @api.depends(
         'commission_ids.state',
         'commission_ids.commission_amount',
@@ -225,4 +294,34 @@ class ReferralMember(models.Model):
             'context': {
                 'default_member_id': self.id,
             },
+        }
+
+    def action_view_sale_orders(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Sales Orders'),
+            'res_model': 'sale.order',
+            'view_mode': 'list,form',
+            'domain': [('referral_member_id', '=', self.id)],
+        }
+
+    def action_view_commissions(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Commissions'),
+            'res_model': 'referral.commission',
+            'view_mode': 'list,form',
+            'domain': [('beneficiary_member_id', '=', self.id)],
+        }
+
+    def action_view_withdrawals(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Withdrawals'),
+            'res_model': 'commission.withdraw',
+            'view_mode': 'list,form',
+            'domain': [('member_id', '=', self.id)],
         }

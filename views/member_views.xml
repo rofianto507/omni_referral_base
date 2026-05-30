@@ -5,18 +5,19 @@
             <field name="name">referral.member.list</field>
             <field name="model">referral.member</field>
             <field name="arch" type="xml">
-                <list string="Members" >
+                <list string="Members">
                     <field name="member_code"/>
                     <field name="partner_id"/>
                     <field name="sponsor_id"/>
                     <field name="join_date"/>
+                    <field name="downline_count"/>
+                    <field name="commission_balance"/>
                     <field name="state"
                         widget="badge"
                         decoration-muted="state == 'draft'"
                         decoration-success="state == 'active'"
                         decoration-warning="state == 'suspended'"
                         decoration-danger="state == 'terminated'"/>
-                    <field name="downline_count"/>
                 </list>
             </field>
         </record>
@@ -26,7 +27,7 @@
             <field name="model">referral.member</field>
             <field name="arch" type="xml">
                 <form string="Member">
-                     <header>
+                    <header>
                         <button name="action_activate" type="object" string="Activate"
                                 invisible="state != 'draft'" class="btn-primary"/>
                         <button name="action_suspend" type="object" string="Suspend"
@@ -34,31 +35,69 @@
                         <button name="action_reactivate" type="object" string="Reactivate"
                                 invisible="state != 'suspended'" class="btn-primary"/>
                         <button name="action_terminate" type="object" string="Terminate"
-                                invisible="state != 'suspended'" confirm="Member cannot be reactivated. Are you sure?"/>
+                                invisible="state != 'suspended'"
+                                confirm="Member cannot be reactivated. Are you sure?"/>
                         <button name="action_withdraw"
-                            type="object"
-                            string="Withdraw Commission"
-                            class="btn-warning"
-                            invisible="commission_balance &lt;= 0"/>
+                                type="object"
+                                string="Withdraw Commission"
+                                class="btn-warning"
+                                invisible="commission_balance &lt;= 0"/>
                         <button name="action_print_member_card"
                                 type="object"
                                 string="Print Member Card"
                                 invisible="state != 'active'"
                                 class="btn-primary"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,active,suspended,terminated"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,active,suspended,terminated"/>
                     </header>
                     <sheet>
+                        <!-- Smart Buttons -->
+                        <div name="button_box" class="oe_button_box">
+                            <button name="action_view_sale_orders"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-shopping-cart"
+                                    invisible="sale_order_count == 0">
+                                <field name="sale_order_count"
+                                       string="Sales"
+                                       widget="statinfo"/>
+                            </button>
+                            <button name="action_view_commissions"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-percent"
+                                    invisible="commission_count == 0">
+                                <field name="commission_count"
+                                       string="Commissions"
+                                       widget="statinfo"/>
+                            </button>
+                            <button name="action_view_withdrawals"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-money"
+                                    invisible="withdraw_count == 0">
+                                <field name="withdraw_count"
+                                       string="Withdrawals"
+                                       widget="statinfo"/>
+                            </button>
+                        </div>
+
+                        <!-- Main Info -->
                         <group>
-                            <group>
+                            <group string="Member Info">
                                 <field name="member_code" readonly="1"/>
                                 <field name="partner_id"/>
                                 <field name="phone"/>
                                 <field name="email"/>
-                            </group>
-                            <group>
                                 <field name="sponsor_id"/>
                                 <field name="join_date"/>
                                 <field name="downline_count" readonly="1"/>
+                            </group>
+                            <group string="Commission Summary">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="commission_total_earned" readonly="1"/>
+                                <field name="commission_total_pending" readonly="1"/>
+                                <field name="commission_withdrawn" readonly="1"/>
                                 <field name="commission_balance" readonly="1"/>
                             </group>
                         </group>
@@ -66,15 +105,15 @@
                         <notebook>
                             <page string="Direct Downlines">
                                 <field name="downline_ids" readonly="1">
-                                    <list string="Downlines" >
+                                    <list string="Downlines">
                                         <field name="member_code"/>
                                         <field name="partner_id"/>
-                                        <field name="state" widget="badge"
-                                                decoration-muted="state == 'draft'"
-                                                decoration-success="state == 'active'"
-                                                decoration-warning="state == 'suspended'"
-                                                decoration-danger="state == 'terminated'"/>
                                         <field name="join_date"/>
+                                        <field name="state" widget="badge"
+                                               decoration-muted="state == 'draft'"
+                                               decoration-success="state == 'active'"
+                                               decoration-warning="state == 'suspended'"
+                                               decoration-danger="state == 'terminated'"/>
                                     </list>
                                 </field>
                             </page>
@@ -83,13 +122,14 @@
                                     <list string="Commissions">
                                         <field name="sale_order_id"/>
                                         <field name="source_member_id"/>
+                                        <field name="level_depth"/>
                                         <field name="commission_pct" string="Rate (%)"/>
                                         <field name="base_amount"/>
                                         <field name="commission_amount" string="Amount"/>
                                         <field name="state" widget="badge"
-                                                decoration-muted="state == 'pending'"
-                                                decoration-success="state == 'approved'"
-                                                decoration-danger="state == 'rejected'"/>
+                                               decoration-muted="state == 'pending'"
+                                               decoration-success="state == 'approved'"
+                                               decoration-danger="state == 'rejected'"/>
                                     </list>
                                 </field>
                             </page>
@@ -103,11 +143,11 @@
                                         <field name="commission_balance_after"/>
                                         <field name="date_paid"/>
                                         <field name="state" widget="badge"
-                                            decoration-muted="state == 'draft'"
-                                            decoration-info="state == 'submitted'"
-                                            decoration-warning="state == 'approved'"
-                                            decoration-success="state == 'paid'"
-                                            decoration-danger="state == 'rejected'"/>
+                                               decoration-muted="state == 'draft'"
+                                               decoration-info="state == 'submitted'"
+                                               decoration-warning="state == 'approved'"
+                                               decoration-success="state == 'paid'"
+                                               decoration-danger="state == 'rejected'"/>
                                     </list>
                                 </field>
                             </page>
@@ -131,7 +171,9 @@
                     <field name="partner_id"/>
                     <field name="sponsor_id"/>
                     <filter name="filter_active" string="Active" domain="[('state','=','active')]"/>
-                    <group >
+                    <filter name="filter_has_balance" string="Has Balance"
+                            domain="[('commission_balance','>',0)]"/>
+                    <group>
                         <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
                         <filter name="group_sponsor" string="Sponsor" context="{'group_by': 'sponsor_id'}"/>
                     </group>
