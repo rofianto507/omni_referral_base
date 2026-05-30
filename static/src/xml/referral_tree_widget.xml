@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <!-- ── Node Template ── -->
+    <t t-name="omni_referral_base.ReferralNode">
+        <div class="o_referral_node" t-att-class="'depth-' + props.depth">
+
+            <div class="o_referral_node_row" t-on-click="toggle">
+                <!-- Indent -->
+                <span class="o_referral_indent"
+                      t-att-style="'width:' + (props.depth * 24) + 'px'"/>
+
+                <!-- Toggle icon -->
+                <span class="o_referral_toggle">
+                    <t t-if="hasChildren">
+                        <i t-att-class="state.expanded ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"/>
+                    </t>
+                    <t t-else="">
+                        <i class="fa fa-circle o_referral_leaf"/>
+                    </t>
+                </span>
+
+                <!-- Avatar icon -->
+                <span class="o_referral_avatar">
+                    <i class="fa fa-user-circle"/>
+                </span>
+
+                <!-- Info -->
+                <span class="o_referral_info">
+                    <span class="o_referral_name" t-on-click.stop="openMember">
+                        <t t-esc="props.node.name"/>
+                    </span>
+                    <span class="o_referral_code">
+                        [<t t-esc="props.node.member_code"/>]
+                    </span>
+                    <span t-att-class="'o_referral_badge ' + stateClass">
+                        <t t-esc="stateLabel"/>
+                    </span>
+                    <t t-if="props.node.commission_balance > 0">
+                        <span class="o_referral_balance">
+                            Balance: <t t-esc="props.node.commission_balance.toLocaleString()"/>
+                        </span>
+                    </t>
+                </span>
+
+                <!-- Downline count -->
+                <t t-if="hasChildren">
+                    <span class="o_referral_count">
+                        <t t-esc="props.node.children.length"/> downline(s)
+                    </span>
+                </t>
+            </div>
+
+            <!-- Children -->
+            <t t-if="state.expanded and hasChildren">
+                <div class="o_referral_children">
+                    <t t-foreach="props.node.children" t-as="child" t-key="child.id">
+                        <ReferralNode
+                            node="child"
+                            depth="props.depth + 1"
+                            onOpenMember="props.onOpenMember"
+                        />
+                    </t>
+                </div>
+            </t>
+        </div>
+    </t>
+
+    <!-- ── Main View Template ── -->
+    <t t-name="omni_referral_base.ReferralTreeView">
+        <div class="o_referral_tree_view">
+            <div class="o_referral_tree_header">
+                <h4><i class="fa fa-sitemap me-2"/>Referral Network Tree</h4>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="o_referral_loading">
+                    <i class="fa fa-spinner fa-spin fa-2x"/>
+                    <span>Loading referral tree...</span>
+                </div>
+            </t>
+
+            <t t-elif="state.error">
+                <div class="o_referral_error">
+                    <i class="fa fa-exclamation-triangle me-2"/>
+                    <t t-esc="state.error"/>
+                </div>
+            </t>
+
+            <t t-elif="state.tree">
+                <div class="o_referral_tree_body">
+                    <ReferralNode
+                        node="state.tree"
+                        depth="0"
+                        onOpenMember.bind="openMember"
+                    />
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

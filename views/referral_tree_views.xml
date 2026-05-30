@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Client Action -->
+    <record id="action_referral_tree" model="ir.actions.client">
+        <field name="name">Referral Network Tree</field>
+        <field name="tag">referral_tree_action</field>
+    </record>
+
+    <!-- Inherit member form: tambah tombol View Network -->
+    <record id="view_referral_member_form_tree_btn" model="ir.ui.view">
+        <field name="name">referral.member.form.tree.btn</field>
+        <field name="model">referral.member</field>
+        <field name="inherit_id" ref="omni_referral_base.view_referral_member_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(action_referral_tree)d"
+                        type="action"
+                        class="oe_stat_button"
+                        icon="fa-sitemap"
+                        context="{'active_id': id}"
+                        invisible="downline_count == 0">
+                    <span class="o_stat_text">Network</span>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -325,3 +325,31 @@ class ReferralMember(models.Model):
             'view_mode': 'list,form',
             'domain': [('member_id', '=', self.id)],
         }
+    
+    @api.model
+    def get_referral_tree(self, member_id):
+        """Return referral tree data as nested dict, depth = max commission rule level."""
+        max_depth = self.env['commission.rule'].search_count([])
+        if max_depth == 0:
+            max_depth = 3  # fallback default
+
+        member = self.browse(member_id)
+        if not member.exists():
+            return {}
+
+        def build_node(m, current_depth):
+            node = {
+                'id': m.id,
+                'name': m.partner_id.name or '-',
+                'member_code': m.member_code or '-',
+                'state': m.state,
+                'commission_balance': m.commission_balance,
+                'downline_count': m.downline_count,
+                'children': [],
+            }
+            if current_depth < max_depth:
+                for child in m.downline_ids:
+                    node['children'].append(build_node(child, current_depth + 1))
+            return node
+
+        return build_node(member, 0)

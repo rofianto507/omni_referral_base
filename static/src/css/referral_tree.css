@@ -1,0 +1,133 @@
+.o_referral_tree_view {
+    padding: 24px;
+    background: #f8f9fa;
+    min-height: 100%;
+}
+
+.o_referral_tree_header {
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.o_referral_tree_header h4 {
+    margin: 0;
+    color: #1f2937;
+    font-weight: 700;
+}
+
+.o_referral_tree_body {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* Node row */
+.o_referral_node_row {
+    display: flex;
+    align-items: center;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+    gap: 8px;
+}
+
+.o_referral_node_row:hover {
+    background: #f1f5f9;
+}
+
+.o_referral_toggle {
+    width: 18px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.o_referral_leaf {
+    font-size: 7px !important;
+    color: #d1d5db !important;
+}
+
+.o_referral_avatar {
+    font-size: 22px;
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.o_referral_info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.o_referral_name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+
+.o_referral_name:hover {
+    color: #7c3aed;
+    text-decoration: underline;
+}
+
+.o_referral_code {
+    font-size: 11.5px;
+    color: #9ca3af;
+    font-family: monospace;
+}
+
+/* State badges */
+.o_referral_badge {
+    font-size: 10.5px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+
+.badge-active    { background: #d1fae5; color: #065f46; }
+.badge-draft     { background: #f3f4f6; color: #6b7280; }
+.badge-suspended { background: #fef3c7; color: #92400e; }
+.badge-terminated{ background: #fee2e2; color: #991b1b; }
+
+.o_referral_balance {
+    font-size: 11px;
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+.o_referral_count {
+    font-size: 11px;
+    color: #6b7280;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Children indented block */
+.o_referral_children {
+    border-left: 2px solid #e5e7eb;
+    margin-left: 27px;
+}
+
+/* Loading & error */
+.o_referral_loading,
+.o_referral_error {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 32px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.o_referral_error {
+    color: #dc2626;
+}

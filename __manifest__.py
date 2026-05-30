@@ -20,9 +20,17 @@
         'views/sale_order_views.xml',
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
+        'views/referral_tree_views.xml',
         'views/menu.xml',
         'reports/member_card_report.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'omni_referral_base/static/src/css/referral_tree.css',
+            'omni_referral_base/static/src/xml/referral_tree_widget.xml',
+            'omni_referral_base/static/src/js/referral_tree_widget.js',
+        ],
+    },
     'images': ['static/description/banner.png'],
     'installable': True,
     'application': True, 
