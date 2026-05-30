@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { Component, useState, onWillStart, xml } from "@odoo/owl";
+import { Component, useState, onWillStart } from "@odoo/owl";
 
 // ── Node Component ─────────────────────────────────────────────────────────────
 class ReferralNode extends Component {
@@ -12,6 +12,8 @@ class ReferralNode extends Component {
         onOpenMember: Function,
     };
     static template = "omni_referral_base.ReferralNode";
+    // ↓ wajib ada agar bisa rekursif render dirinya sendiri
+    static components = {};
 
     setup() {
         this.state = useState({ expanded: this.props.depth === 0 });
@@ -51,6 +53,9 @@ class ReferralNode extends Component {
         this.props.onOpenMember(this.props.node.id);
     }
 }
+
+// daftarkan dirinya sendiri setelah class terdefinisi
+ReferralNode.components = { ReferralNode };
 
 // ── Main Tree View ─────────────────────────────────────────────────────────────
 class ReferralTreeView extends Component {
