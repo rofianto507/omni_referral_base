@@ -88,6 +88,24 @@
                                     </list>
                                 </field>
                             </page>
+                            <page string="Withdrawals">
+                                <field name="withdraw_ids" readonly="1">
+                                    <list string="Withdrawals">
+                                        <field name="name"/>
+                                        <field name="date_request"/>
+                                        <field name="amount"/>
+                                        <field name="commission_balance_before"/>
+                                        <field name="commission_balance_after"/>
+                                        <field name="date_paid"/>
+                                        <field name="state" widget="badge"
+                                            decoration-muted="state == 'draft'"
+                                            decoration-info="state == 'submitted'"
+                                            decoration-warning="state == 'approved'"
+                                            decoration-success="state == 'paid'"
+                                            decoration-danger="state == 'rejected'"/>
+                                    </list>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                     <chatter>

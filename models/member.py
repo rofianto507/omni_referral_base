@@ -92,26 +92,40 @@ class ReferralMember(models.Model):
         string='Currency',
         default=lambda self: self.env.company.currency_id,
     )
+    commission_withdrawn = fields.Monetary(
+        string='Total Withdrawn',
+        currency_field='currency_id',
+        default=0.0,
+        readonly=True,
+        help='Commission amount that has been withdrawn by the member. This is used for reference and does not affect the current balance directly, as balance is computed based on approved commissions minus withdrawn amounts.',
+    )
     commission_balance = fields.Monetary(
-        string="Commission Balance",
+        string='Commission Balance',
         currency_field='currency_id',
         compute='_compute_commission_balance',
         store=True,
-        help='Total komisi yang sudah diapproved dan belum dicairkan',
+        help='Current commission balance available for withdrawal. Computed as the sum of approved commissions minus total withdrawn amount. This field is read-only and updated automatically when commissions are approved or withdrawn.',
+    )
+    withdraw_ids = fields.One2many(
+        'commission.withdraw',
+        'member_id',
+        string='Withdrawals',
     )
     _sql_constraints = [
         ("uniq_member_code", "unique(member_code)", "Member Code must be unique."),
         ("uniq_partner_member", "unique(partner_id)", "Contact is already registered as a member."),
     ]
+
     @api.depends(
         'commission_ids.state',
         'commission_ids.commission_amount',
         'commission_ids.currency_id',
+        'commission_withdrawn',
     )
     def _compute_commission_balance(self):
         for rec in self:
             approved = rec.commission_ids.filtered(lambda c: c.state == 'approved')
-            rec.commission_balance = sum(
+            total_approved = sum(
                 c.currency_id._convert(
                     c.commission_amount,
                     rec.currency_id,
@@ -119,6 +133,8 @@ class ReferralMember(models.Model):
                     fields.Date.today(),
                 ) for c in approved
             )
+            rec.commission_balance = total_approved - rec.commission_withdrawn
+            
     @api.model_create_multi
     def create(self, vals_list):
         seq = self.env["ir.sequence"]

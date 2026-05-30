@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List -->
+    <record id="view_commission_withdraw_list" model="ir.ui.view">
+        <field name="name">commission.withdraw.list</field>
+        <field name="model">commission.withdraw</field>
+        <field name="arch" type="xml">
+            <list string="Withdrawals" create="0">
+                <field name="name"/>
+                <field name="member_id"/>
+                <field name="date_request"/>
+                <field name="amount"/>
+                <field name="commission_balance_before"/>
+                <field name="commission_balance_after"/>
+                <field name="date_paid"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'draft'"
+                       decoration-info="state == 'submitted'"
+                       decoration-warning="state == 'approved'"
+                       decoration-success="state == 'paid'"
+                       decoration-danger="state == 'rejected'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="view_commission_withdraw_form" model="ir.ui.view">
+        <field name="name">commission.withdraw.form</field>
+        <field name="model">commission.withdraw</field>
+        <field name="arch" type="xml">
+            <form string="Commission Withdrawal">
+                <header>
+                    <button name="action_submit" string="Submit" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-success" invisible="state != 'submitted'"/>
+                    <button name="action_paid" string="Mark as Paid" type="object"
+                            class="btn-success" invisible="state != 'approved'"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state in ('draft','paid')"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'rejected'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,approved,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="member_id" readonly="state != 'draft'"/>
+                            <field name="amount" readonly="state != 'draft'"/>
+                            <field name="date_request" readonly="1"/>
+                            <field name="date_paid" readonly="1" invisible="not date_paid"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="commission_balance_before" readonly="1"/>
+                            <field name="commission_balance_after" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="note" readonly="state != 'draft'" placeholder="Optional notes..."/>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="view_commission_withdraw_search" model="ir.ui.view">
+        <field name="name">commission.withdraw.search</field>
+        <field name="model">commission.withdraw</field>
+        <field name="arch" type="xml">
+            <search string="Search Withdrawals">
+                <field name="name"/>
+                <field name="member_id"/>
+                <filter string="Draft" name="filter_draft" domain="[('state','=','draft')]"/>
+                <filter string="Submitted" name="filter_submitted" domain="[('state','=','submitted')]"/>
+                <filter string="Approved" name="filter_approved" domain="[('state','=','approved')]"/>
+                <filter string="Paid" name="filter_paid" domain="[('state','=','paid')]"/>
+                <filter string="Rejected" name="filter_rejected" domain="[('state','=','rejected')]"/>
+                <group>
+                    <filter string="State" name="group_state" context="{'group_by':'state'}"/>
+                    <filter string="Member" name="group_member" context="{'group_by':'member_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_commission_withdraw" model="ir.actions.act_window">
+        <field name="name">Withdrawals</field>
+        <field name="res_model">commission.withdraw</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_commission_withdraw_search"/>
+    </record>
+
+
+</odoo>
