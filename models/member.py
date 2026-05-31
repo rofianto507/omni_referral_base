@@ -31,7 +31,8 @@ class ReferralMember(models.Model):
     )
     partner_image = fields.Image(
         string='Photo',
-        related='partner_id.image_128',
+        compute='_compute_partner_image',
+        inverse='_inverse_partner_image',
         readonly=False,
         store=False,
     )
@@ -152,6 +153,15 @@ class ReferralMember(models.Model):
         ("uniq_member_code", "unique(member_code)", "Member Code must be unique."),
         ("uniq_partner_member", "unique(partner_id)", "Contact is already registered as a member."),
     ]
+
+    def _compute_partner_image(self):
+        for rec in self:
+            rec.partner_image = rec.partner_id.image_128 if rec.partner_id else False
+
+    def _inverse_partner_image(self):
+        for rec in self:
+            if rec.partner_id:
+                rec.partner_id.image_128 = rec.partner_image
     
     @api.depends('downline_ids')
     def _compute_downline_count(self):
