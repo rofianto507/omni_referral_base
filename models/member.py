@@ -29,6 +29,12 @@ class ReferralMember(models.Model):
         readonly=False,
         store=True,
     )
+    partner_image = fields.Image(
+        string='Photo',
+        related='partner_id.image_128',
+        readonly=True,
+        store=False,
+    )
     member_code = fields.Char(
         string="Member Code",
         required=True,
