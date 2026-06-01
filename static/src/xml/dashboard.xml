@@ -9,7 +9,6 @@
                     <i class="fa fa-bar-chart text-primary" style="font-size:22px;"/>
                     <h4 class="mb-0 fw-bold">Referral Dashboard</h4>
                 </div>
-                <!-- Filter Period -->
                 <div class="d-flex align-items-center gap-2">
                     <span class="text-muted" style="font-size:13px;">Period:</span>
                     <select class="form-select form-select-sm o_dashboard_period_select"
@@ -31,10 +30,9 @@
             </t>
 
             <t t-elif="state.data">
+
                 <!-- KPI Cards -->
                 <div class="o_dashboard_kpi_grid">
-
-                    <!-- Card: Total Members -->
                     <div class="o_kpi_card">
                         <div class="o_kpi_icon" style="background:#ede9fe;">
                             <i class="fa fa-users" style="color:#7c3aed;"/>
@@ -47,8 +45,6 @@
                             <div class="o_kpi_sub">All time</div>
                         </div>
                     </div>
-
-                    <!-- Card: Active Members -->
                     <div class="o_kpi_card">
                         <div class="o_kpi_icon" style="background:#d1fae5;">
                             <i class="fa fa-diamond" style="color:#059669;"/>
@@ -61,8 +57,6 @@
                             <div class="o_kpi_sub">All time</div>
                         </div>
                     </div>
-
-                    <!-- Card: Total Commission -->
                     <div class="o_kpi_card">
                         <div class="o_kpi_icon" style="background:#fef3c7;">
                             <i class="fa fa-percent" style="color:#d97706;"/>
@@ -75,8 +69,6 @@
                             <div class="o_kpi_sub" t-esc="periodLabel"/>
                         </div>
                     </div>
-
-                    <!-- Card: Total Withdrawal -->
                     <div class="o_kpi_card">
                         <div class="o_kpi_icon" style="background:#fee2e2;">
                             <i class="fa fa-money" style="color:#dc2626;"/>
@@ -89,10 +81,36 @@
                             <div class="o_kpi_sub" t-esc="periodLabel"/>
                         </div>
                     </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="o_dashboard_charts_grid">
+
+                    <!-- Commission Trend -->
+                    <div class="o_dashboard_chart_card">
+                        <div class="o_chart_card_header">
+                            <i class="fa fa-bar-chart me-2" style="color:#7c3aed;"/>
+                            <span class="fw-semibold">Commission Trend</span>
+                            <span class="text-muted ms-2" style="font-size:11px;"
+                                  t-esc="'(' + periodLabel + ')'"/>
+                        </div>
+                        <div t-ref="chartCommission" class="o_chart_canvas"/>
+                    </div>
+
+                    <!-- Member Growth -->
+                    <div class="o_dashboard_chart_card">
+                        <div class="o_chart_card_header">
+                            <i class="fa fa-line-chart me-2" style="color:#059669;"/>
+                            <span class="fw-semibold">Member Growth</span>
+                            <span class="text-muted ms-2" style="font-size:11px;"
+                                  t-esc="'(' + periodLabel + ')'"/>
+                        </div>
+                        <div t-ref="chartMember" class="o_chart_canvas"/>
+                    </div>
 
                 </div>
-            </t>
 
+            </t>
         </div>
     </t>
 </templates>
