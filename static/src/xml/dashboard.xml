@@ -34,8 +34,8 @@
                 <!-- KPI Cards -->
                 <div class="o_dashboard_kpi_grid">
                     <div class="o_kpi_card">
-                        <div class="o_kpi_icon" style="background:#ede9fe;">
-                            <i class="fa fa-users" style="color:#7c3aed;"/>
+                        <div class="o_kpi_icon" style="background:#f0eff5;">
+                            <i class="fa fa-users" style="color:#71639e;"/>
                         </div>
                         <div class="o_kpi_body">
                             <div class="o_kpi_label">Total Members</div>
@@ -46,36 +46,36 @@
                         </div>
                     </div>
                     <div class="o_kpi_card">
-                        <div class="o_kpi_icon" style="background:#d1fae5;">
-                            <i class="fa fa-diamond" style="color:#059669;"/>
+                        <div class="o_kpi_icon" style="background:#f0eff5;">
+                            <i class="fa fa-diamond" style="color:#71639e;"/>
                         </div>
                         <div class="o_kpi_body">
                             <div class="o_kpi_label">Active Members</div>
-                            <div class="o_kpi_value" style="color:#059669;">
+                            <div class="o_kpi_value"  >
                                 <t t-esc="formatNumber(state.data.kpi.active_members)"/>
                             </div>
                             <div class="o_kpi_sub">All time</div>
                         </div>
                     </div>
                     <div class="o_kpi_card">
-                        <div class="o_kpi_icon" style="background:#fef3c7;">
-                            <i class="fa fa-percent" style="color:#d97706;"/>
+                        <div class="o_kpi_icon" style="background:#f0eff5;">
+                            <i class="fa fa-percent" style="color:#71639e;"/>
                         </div>
                         <div class="o_kpi_body">
                             <div class="o_kpi_label">Commission Approved</div>
-                            <div class="o_kpi_value" style="color:#d97706;">
+                            <div class="o_kpi_value" >
                                 <t t-esc="formatCurrency(state.data.kpi.total_commission)"/>
                             </div>
                             <div class="o_kpi_sub" t-esc="periodLabel"/>
                         </div>
                     </div>
                     <div class="o_kpi_card">
-                        <div class="o_kpi_icon" style="background:#fee2e2;">
-                            <i class="fa fa-money" style="color:#dc2626;"/>
+                        <div class="o_kpi_icon" style="background:#f0eff5;">
+                            <i class="fa fa-money" style="color:#71639e;"/>
                         </div>
                         <div class="o_kpi_body">
                             <div class="o_kpi_label">Withdrawal Paid</div>
-                            <div class="o_kpi_value" style="color:#dc2626;">
+                            <div class="o_kpi_value" >
                                 <t t-esc="formatCurrency(state.data.kpi.total_withdrawal)"/>
                             </div>
                             <div class="o_kpi_sub" t-esc="periodLabel"/>
@@ -89,7 +89,7 @@
                     <!-- Commission Trend -->
                     <div class="o_dashboard_chart_card">
                         <div class="o_chart_card_header">
-                            <i class="fa fa-bar-chart me-2" style="color:#7c3aed;"/>
+                            <i class="fa fa-bar-chart me-2" style="color:#71639e;"/>
                             <span class="fw-semibold">Commission Trend</span>
                             <span class="text-muted ms-2" style="font-size:11px;"
                                   t-esc="'(' + periodLabel + ')'"/>
@@ -100,7 +100,7 @@
                     <!-- Member Growth -->
                     <div class="o_dashboard_chart_card">
                         <div class="o_chart_card_header">
-                            <i class="fa fa-line-chart me-2" style="color:#059669;"/>
+                            <i class="fa fa-line-chart me-2" style="color:#71639e;"/>
                             <span class="fw-semibold">Member Growth</span>
                             <span class="text-muted ms-2" style="font-size:11px;"
                                   t-esc="'(' + periodLabel + ')'"/>

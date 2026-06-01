@@ -111,13 +111,13 @@ class ReferralDashboard extends Component {
                 barMaxWidth: 48,
                 itemStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        { offset: 0, color: "#7c3aed" },
+                        { offset: 0, color: "#71639e" },
                         { offset: 1, color: "#a78bfa" },
                     ]),
                     borderRadius: [6, 6, 0, 0],
                 },
                 emphasis: {
-                    itemStyle: { color: "#6d28d9" },
+                    itemStyle: { color: "#71639e" },
                 },
                 label: {
                     show: values.length <= 6,

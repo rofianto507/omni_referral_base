@@ -1,11 +1,32 @@
 from odoo import models, api, fields
-from datetime import date
+from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
+import pytz
 
 
 class ReferralDashboard(models.AbstractModel):
     _name = 'referral.dashboard'
     _description = 'Referral Dashboard'
+
+    def _local_date_to_utc_range(self, d_from, d_to):
+        """
+        Konversi date range dari timezone perusahaan ke UTC.
+        d_from : date — awal periode (00:00:00 local)
+        d_to   : date — akhir periode (23:59:59 local)
+        Return : (datetime_utc_start, datetime_utc_end)
+        """
+        tz_name = self.env.company.partner_id.tz or self.env.user.tz or 'UTC'
+        local_tz = pytz.timezone(tz_name)
+
+        # Batas awal: 00:00:00 local → UTC
+        dt_from_local = local_tz.localize(datetime(d_from.year, d_from.month, d_from.day, 0, 0, 0))
+        dt_from_utc = dt_from_local.astimezone(pytz.utc).replace(tzinfo=None)
+
+        # Batas akhir: 23:59:59 local → UTC
+        dt_to_local = local_tz.localize(datetime(d_to.year, d_to.month, d_to.day, 23, 59, 59))
+        dt_to_utc = dt_to_local.astimezone(pytz.utc).replace(tzinfo=None)
+
+        return dt_from_utc, dt_to_utc
 
     @api.model
     def get_dashboard_data(self, period='this_month'):
@@ -32,20 +53,23 @@ class ReferralDashboard(models.AbstractModel):
         Withdraw = self.env['commission.withdraw']
         currency = self.env.company.currency_id
 
+        # Konversi ke UTC untuk query create_date
+        dt_from_utc, dt_to_utc = self._local_date_to_utc_range(date_from, date_to)
+
         # ── KPI ──────────────────────────────────────────────
         total_members = Member.search_count([])
         active_members = Member.search_count([('state', '=', 'active')])
 
         approved_commissions = Commission.search([
             ('state', '=', 'approved'),
-            ('create_date', '>=', fields.Datetime.to_datetime(date_from)),
-            ('create_date', '<=', fields.Datetime.to_datetime(date_to)),
+            ('create_date', '>=', dt_from_utc),
+            ('create_date', '<=', dt_to_utc),
         ])
         total_commission = sum(approved_commissions.mapped('commission_amount'))
 
         paid_withdrawals = Withdraw.search([
             ('state', '=', 'paid'),
-            ('date_paid', '>=', date_from),
+            ('date_paid', '>=', date_from),  # date field → tidak perlu konversi UTC
             ('date_paid', '<=', date_to),
         ])
         total_withdrawal = sum(paid_withdrawals.mapped('amount'))
@@ -62,11 +86,12 @@ class ReferralDashboard(models.AbstractModel):
         chart_commission_values = []
         for m in months:
             m_end = (m + relativedelta(months=1)).replace(day=1) - relativedelta(days=1)
+            m_utc_start, m_utc_end = self._local_date_to_utc_range(m, m_end)
             label = m.strftime('%b %Y')
             comms = Commission.search([
                 ('state', '=', 'approved'),
-                ('create_date', '>=', fields.Datetime.to_datetime(m)),
-                ('create_date', '<=', fields.Datetime.to_datetime(m_end)),
+                ('create_date', '>=', m_utc_start),
+                ('create_date', '<=', m_utc_end),
             ])
             total = sum(comms.mapped('commission_amount'))
             chart_commission_labels.append(label)
@@ -79,7 +104,7 @@ class ReferralDashboard(models.AbstractModel):
             m_end = (m + relativedelta(months=1)).replace(day=1) - relativedelta(days=1)
             label = m.strftime('%b %Y')
             count = Member.search_count([
-                ('join_date', '>=', m),
+                ('join_date', '>=', m),   # date field → tidak perlu konversi UTC
                 ('join_date', '<=', m_end),
             ])
             chart_member_labels.append(label)
