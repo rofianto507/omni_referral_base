@@ -107,9 +107,120 @@
                         </div>
                         <div t-ref="chartMember" class="o_chart_canvas"/>
                     </div>
+                </div>
+                 <!-- ── Bottom Section ── -->
+                <div class="o_dashboard_bottom_grid">
+
+                    <!-- Top 5 Members -->
+                    <div class="o_dashboard_card">
+                        <div class="o_card_header">
+                            <i class="fa fa-trophy me-2" style="color:#d97706;"/>
+                            <span class="fw-semibold">Top 5 Members</span>
+                            <span class="text-muted ms-1" style="font-size:11px;">by commission balance</span>
+                        </div>
+                        <t t-if="state.data.top_members.length == 0">
+                            <div class="o_empty_state">
+                                <i class="fa fa-users fa-2x text-muted mb-2"/>
+                                <div class="text-muted">No active members with balance yet</div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="o_top_members_list">
+                                <t t-foreach="state.data.top_members" t-as="m" t-key="m.id">
+                                    <div class="o_top_member_row" t-on-click="() => openMember(m.id)">
+                                        <!-- Rank -->
+                                        <div class="o_rank_badge" t-att-class="m_index == 0 ? 'rank-gold' : m_index == 1 ? 'rank-silver' : m_index == 2 ? 'rank-bronze' : 'rank-default'">
+                                            <t t-esc="m_index + 1"/>
+                                        </div>
+                                        <!-- Avatar -->
+                                        <img t-att-src="m.avatar_url"
+                                             class="o_member_mini_avatar"
+                                             onerror="this.src='/web/static/img/placeholder.png'"/>
+                                        <!-- Info -->
+                                        <div class="o_member_mini_info">
+                                            <div class="fw-semibold text-truncate" style="font-size:13px;" t-esc="m.name"/>
+                                            <div class="text-muted" style="font-size:11px;font-family:monospace;" t-esc="m.member_code"/>
+                                        </div>
+                                        <!-- Stats -->
+                                        <div class="ms-auto text-end">
+                                            <div class="fw-bold" style="font-size:13px;color:#7c3aed;"
+                                                 t-esc="formatCurrency(m.commission_balance)"/>
+                                            <div class="text-muted" style="font-size:10px;">
+                                                <t t-esc="m.downline_count"/> downline(s)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+
+                    <!-- Pending Commissions -->
+                    <div class="o_dashboard_card">
+                        <div class="o_card_header">
+                            <i class="fa fa-clock-o me-2" style="color:#dc2626;"/>
+                            <span class="fw-semibold">Pending Commissions</span>
+                            <span class="ms-auto">
+                                <span class="badge rounded-pill bg-warning text-dark" style="font-size:10px;"
+                                      t-esc="state.data.pending_commissions.length + ' pending'"/>
+                            </span>
+                        </div>
+                        <t t-if="state.data.pending_commissions.length == 0">
+                            <div class="o_empty_state">
+                                <i class="fa fa-check-circle fa-2x text-success mb-2"/>
+                                <div class="text-muted">All commissions are up to date!</div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="o_pending_table_wrap">
+                                <table class="o_pending_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Member</th>
+                                            <th>Sales Order</th>
+                                            <th>Lvl</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="state.data.pending_commissions" t-as="c" t-key="c.id">
+                                            <tr>
+                                                <td>
+                                                    <div class="fw-semibold" style="font-size:12px;" t-esc="c.beneficiary"/>
+                                                    <div class="text-muted" style="font-size:10px;font-family:monospace;" t-esc="c.beneficiary_code"/>
+                                                </td>
+                                                <td style="font-size:12px;" t-esc="c.sale_order"/>
+                                                <td>
+                                                    <span class="badge rounded-pill bg-light text-dark border" style="font-size:10px;">
+                                                        L<t t-esc="c.level_depth"/>
+                                                    </span>
+                                                </td>
+                                                <td class="fw-semibold" style="font-size:12px;color:#059669;"
+                                                    t-esc="formatCurrency(c.commission_amount)"/>
+                                                <td class="text-muted" style="font-size:11px;" t-esc="c.create_date"/>
+                                                <td>
+                                                    <div class="d-flex gap-1">
+                                                        <button class="btn btn-xs btn-success"
+                                                                t-on-click="() => approveCommission(c.id)">
+                                                            <i class="fa fa-check"/>
+                                                        </button>
+                                                        <button class="btn btn-xs btn-danger"
+                                                                t-on-click="() => rejectCommission(c.id)">
+                                                            <i class="fa fa-times"/>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
 
                 </div>
-
             </t>
         </div>
     </t>

@@ -104,12 +104,48 @@ class ReferralDashboard(models.AbstractModel):
             m_end = (m + relativedelta(months=1)).replace(day=1) - relativedelta(days=1)
             label = m.strftime('%b %Y')
             count = Member.search_count([
-                ('join_date', '>=', m),   # date field → tidak perlu konversi UTC
+                ('join_date', '>=', m),   
                 ('join_date', '<=', m_end),
             ])
             chart_member_labels.append(label)
             chart_member_values.append(count)
+         # ── Top 5 Members by commission_balance ──────────────
+        top_members_rec = Member.search(
+            [('state', '=', 'active'), ('commission_balance', '>', 0)],
+            order='commission_balance desc',
+            limit=5,
+        )
+        top_members = []
+        for m in top_members_rec:
+            top_members.append({
+                'id': m.id,
+                'name': m.partner_id.name or '-',
+                'member_code': m.member_code or '-',
+                'avatar_url': '/web/image/res.partner/%d/image_128' % m.partner_id.id,
+                'commission_balance': m.commission_balance,
+                'downline_count': m.downline_count,
+                'state': m.state,
+            })
 
+        # ── Recent Pending Commissions (10 newest) ───────────
+        pending_commissions = Commission.search(
+            [('state', '=', 'pending')],
+            order='create_date desc',
+            limit=10,
+        )
+        pending_list = []
+        for c in pending_commissions:
+            pending_list.append({
+                'id': c.id,
+                'beneficiary': c.beneficiary_member_id.partner_id.name or '-',
+                'beneficiary_code': c.beneficiary_member_id.member_code or '-',
+                'source_member': c.source_member_id.partner_id.name or '-',
+                'sale_order': c.sale_order_id.name or '-',
+                'level_depth': c.level_depth,
+                'commission_pct': c.commission_pct,
+                'commission_amount': c.commission_amount,
+                'create_date': c.create_date.strftime('%d %b %Y') if c.create_date else '-',
+            })
         return {
             'period': period,
             'date_from': str(date_from),
@@ -130,4 +166,17 @@ class ReferralDashboard(models.AbstractModel):
                 'labels': chart_member_labels,
                 'values': chart_member_values,
             },
+            'top_members': top_members,
+            'pending_commissions': pending_list,
         }
+    @api.model
+    def action_approve_commission(self, commission_id):
+        commission = self.env['referral.commission'].browse(commission_id)
+        commission.action_approve()
+        return True
+
+    @api.model
+    def action_reject_commission(self, commission_id):
+        commission = self.env['referral.commission'].browse(commission_id)
+        commission.action_reject()
+        return True

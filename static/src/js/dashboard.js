@@ -190,6 +190,27 @@ class ReferralDashboard extends Component {
             }],
         });
     }
+    
+    // ── Actions ──────────────────────────────────────────────────────────────
+    openMember(memberId) {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "referral.member",
+            res_id: memberId,
+            views: [[false, "form"]],
+            target: "current",
+        });
+    }
+
+    async approveCommission(commissionId) {
+        await this.orm.call("referral.dashboard", "action_approve_commission", [commissionId]);
+        await this.loadData();
+    }
+
+    async rejectCommission(commissionId) {
+        await this.orm.call("referral.dashboard", "action_reject_commission", [commissionId]);
+        await this.loadData();
+    }
 
     _fmt(val) {
         return new Intl.NumberFormat("id-ID", { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(val || 0);
