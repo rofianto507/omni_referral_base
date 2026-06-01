@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { Component, useState, onWillStart, onMounted, onPatched, useRef } from "@odoo/owl";
+import { Component, useState, onWillStart, onMounted, onPatched,onWillUnmount, useRef } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 class ReferralDashboard extends Component {
@@ -23,6 +23,7 @@ class ReferralDashboard extends Component {
         this.chartMemberRef = useRef("chartMember");
         this._chartCommission = null;
         this._chartMember = null;
+        this._resizeObserver = null;
 
         onWillStart(async () => {
             await this._loadECharts();
@@ -31,13 +32,44 @@ class ReferralDashboard extends Component {
 
         onMounted(() => {
             this._renderCharts();
+            this._initResizeObserver();
         });
 
         onPatched(() => {
             this._renderCharts();
+            if(!this._resizeObserver) {
+                this._initResizeObserver();
+            }
+        });
+        onWillUnmount(() => {
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+                this._resizeObserver = null;
+            }
+            if (this._chartCommission) {
+                this._chartCommission.dispose();
+                this._chartCommission = null;
+            }
+            if (this._chartMember) {
+                this._chartMember.dispose();
+                this._chartMember = null;
+            }
         });
     }
+     _initResizeObserver() {
+        const container = this.chartCommissionRef.el?.closest(".o_referral_dashboard");
+        if (!container || !window.ResizeObserver) return;
 
+        this._resizeObserver = new ResizeObserver(() => {
+            this._resizeCharts();
+        });
+        this._resizeObserver.observe(container);
+    }
+
+    _resizeCharts() {
+        if (this._chartCommission) this._chartCommission.resize();
+        if (this._chartMember) this._chartMember.resize();
+    }
     async _loadECharts() {
         if (window.echarts) return;
         return new Promise((resolve, reject) => {
@@ -88,7 +120,7 @@ class ReferralDashboard extends Component {
                     const p = params[0];
                     return `${p.name}<br/><b>${currency_symbol} ${this._fmt(p.value)}</b>`;
                 },
-                backgroundColor: "#1f2937",
+                backgroundColor: "#1f2937cc",
                 borderColor: "#1f2937",
                 textStyle: { color: "#fff" },
             },
@@ -151,7 +183,7 @@ class ReferralDashboard extends Component {
                     const p = params[0];
                     return `${p.name}<br/><b>${p.value} new member(s)</b>`;
                 },
-                backgroundColor: "#1f2937",
+                backgroundColor: "#1f2937cc",
                 borderColor: "#1f2937",
                 textStyle: { color: "#fff" },
             },
