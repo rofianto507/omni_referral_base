@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_omni_referral_root" 
+      <menuitem id="menu_omni_referral_root" 
               name="Omni Referral" 
               sequence="50" 
               web_icon="omni_referral_base,static/description/icon.png"/>
-    <menuitem id="menu_referral_member_list"
+      <menuitem id="menu_referral_dashboard"
+              name="Dashboard"
+              parent="menu_omni_referral_root"
+              action="action_referral_dashboard"
+              sequence="1"/>
+      <menuitem id="menu_referral_member_list"
               name="Members"
               parent="menu_omni_referral_root"
               action="action_referral_member"
               sequence="20"/>
-    <menuitem id="menu_referral_commission"
+      <menuitem id="menu_referral_commission"
               name="Commissions"
               parent="menu_omni_referral_root"
               action="action_referral_commission"

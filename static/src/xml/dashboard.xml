@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="omni_referral_base.ReferralDashboard">
+        <div class="o_referral_dashboard">
+
+            <!-- Header -->
+            <div class="o_dashboard_header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa fa-bar-chart text-primary" style="font-size:22px;"/>
+                    <h4 class="mb-0 fw-bold">Referral Dashboard</h4>
+                </div>
+                <!-- Filter Period -->
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted" style="font-size:13px;">Period:</span>
+                    <select class="form-select form-select-sm o_dashboard_period_select"
+                            t-on-change="onPeriodChange">
+                        <option value="this_month">This Month</option>
+                        <option value="last_3_months">Last 3 Months</option>
+                        <option value="last_6_months">Last 6 Months</option>
+                        <option value="this_year">This Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <t t-if="state.loading">
+                <div class="o_dashboard_loading">
+                    <i class="fa fa-spinner fa-spin fa-2x text-primary"/>
+                    <span class="ms-3 text-muted">Loading dashboard...</span>
+                </div>
+            </t>
+
+            <t t-elif="state.data">
+                <!-- KPI Cards -->
+                <div class="o_dashboard_kpi_grid">
+
+                    <!-- Card: Total Members -->
+                    <div class="o_kpi_card">
+                        <div class="o_kpi_icon" style="background:#ede9fe;">
+                            <i class="fa fa-users" style="color:#7c3aed;"/>
+                        </div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_label">Total Members</div>
+                            <div class="o_kpi_value">
+                                <t t-esc="formatNumber(state.data.kpi.total_members)"/>
+                            </div>
+                            <div class="o_kpi_sub">All time</div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Active Members -->
+                    <div class="o_kpi_card">
+                        <div class="o_kpi_icon" style="background:#d1fae5;">
+                            <i class="fa fa-diamond" style="color:#059669;"/>
+                        </div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_label">Active Members</div>
+                            <div class="o_kpi_value" style="color:#059669;">
+                                <t t-esc="formatNumber(state.data.kpi.active_members)"/>
+                            </div>
+                            <div class="o_kpi_sub">All time</div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Total Commission -->
+                    <div class="o_kpi_card">
+                        <div class="o_kpi_icon" style="background:#fef3c7;">
+                            <i class="fa fa-percent" style="color:#d97706;"/>
+                        </div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_label">Commission Approved</div>
+                            <div class="o_kpi_value" style="color:#d97706;">
+                                <t t-esc="formatCurrency(state.data.kpi.total_commission)"/>
+                            </div>
+                            <div class="o_kpi_sub" t-esc="periodLabel"/>
+                        </div>
+                    </div>
+
+                    <!-- Card: Total Withdrawal -->
+                    <div class="o_kpi_card">
+                        <div class="o_kpi_icon" style="background:#fee2e2;">
+                            <i class="fa fa-money" style="color:#dc2626;"/>
+                        </div>
+                        <div class="o_kpi_body">
+                            <div class="o_kpi_label">Withdrawal Paid</div>
+                            <div class="o_kpi_value" style="color:#dc2626;">
+                                <t t-esc="formatCurrency(state.data.kpi.total_withdrawal)"/>
+                            </div>
+                            <div class="o_kpi_sub" t-esc="periodLabel"/>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,106 @@
+/* ── Dashboard Container ── */
+.o_referral_dashboard {
+    padding: 24px;
+    background: #f8f9fa;
+    min-height: 100%;
+}
+
+/* ── Header ── */
+.o_dashboard_header {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+.o_dashboard_period_select {
+    min-width: 160px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    font-size: 13px;
+}
+
+/* ── Loading ── */
+.o_dashboard_loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+/* ── KPI Grid ── */
+.o_dashboard_kpi_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 1200px) {
+    .o_dashboard_kpi_grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .o_dashboard_kpi_grid { grid-template-columns: 1fr; }
+}
+
+/* ── KPI Card ── */
+.o_kpi_card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.o_kpi_card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.o_kpi_icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+}
+
+.o_kpi_body {
+    flex: 1;
+    min-width: 0;
+}
+
+.o_kpi_label {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    margin-bottom: 4px;
+}
+
+.o_kpi_value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.o_kpi_sub {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 3px;
+}

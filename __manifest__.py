@@ -13,6 +13,7 @@
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'wizard/withdraw_wizard_views.xml',
+        'views/dashboard_views.xml',
         'views/commission_rule_views.xml',
         'views/member_views.xml',
         'views/commission_views.xml',
@@ -27,8 +28,11 @@
     'assets': {
         'web.assets_backend': [
             'omni_referral_base/static/src/css/referral_tree.css',
+            'omni_referral_base/static/src/css/dashboard.css',
             'omni_referral_base/static/src/xml/referral_tree_widget.xml',
+            'omni_referral_base/static/src/xml/dashboard.xml',
             'omni_referral_base/static/src/js/referral_tree_widget.js',
+            'omni_referral_base/static/src/js/dashboard.js',
         ],
     },
     'images': ['static/description/banner.png'],
