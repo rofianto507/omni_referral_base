@@ -9,11 +9,12 @@
         Key Features:
         - Multi-level commission rules by depth level
         - Referral member management with network tree visualization
-        - Automated commission tracking from sales orders
-        - Commission withdrawal management
-        - Interactive dashboard with charts (ECharts)
+        - Automated commission calculation on Sales Order confirmation
+        - Commission cancellation on Sales Order cancellation
+        - Commission withdrawal management with approval workflow
+        - Interactive dashboard with charts (Apache ECharts)
         - Member card report (printable)
-        - Portal-ready architecture
+        - Settings integration
             """,
     'category': 'Sales/Sales',
     'author': 'Sel Studio',
@@ -21,7 +22,9 @@
     'maintainer': 'Sel Studio',
     'support': 'support@selstudio.id', 
     'depends': ['base', 'sale_management', 'mail','account'],
-    'license': 'LGPL-3',
+    'license': 'OPL-1', 
+    'price': 49.0,
+    'currency': 'USD',
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -53,4 +56,5 @@
     'images': ['static/description/banner.png'],
     'installable': True,
     'application': True, 
+    'auto_install': False,
 }
