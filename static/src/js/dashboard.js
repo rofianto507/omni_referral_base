@@ -26,7 +26,6 @@ class ReferralDashboard extends Component {
         this._resizeObserver = null;
 
         onWillStart(async () => {
-            await this._loadECharts();
             await this.loadData();
         });
 
@@ -69,16 +68,6 @@ class ReferralDashboard extends Component {
     _resizeCharts() {
         if (this._chartCommission) this._chartCommission.resize();
         if (this._chartMember) this._chartMember.resize();
-    }
-    async _loadECharts() {
-        if (window.echarts) return;
-        return new Promise((resolve, reject) => {
-            const script = document.createElement("script");
-            script.src = "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js";
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-        });
     }
 
     async loadData() {

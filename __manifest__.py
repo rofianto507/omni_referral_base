@@ -1,11 +1,25 @@
 {
     'name': 'Omni Referral Base',
     'version': '19.0.1.0.0',
-    'summary': 'Module for Multi-Level Referral Network.',
-    'description': 'Core module for multi-tier referral network and sales commission.',
+    'summary': 'Multi-Level Referral Network & Sales Commission for Odoo 19',
+    'description': """
+        Omni Referral Base is a complete multi-level referral network and 
+        commission management module for Odoo 19. 
+
+        Key Features:
+        - Multi-level commission rules by depth level
+        - Referral member management with network tree visualization
+        - Automated commission tracking from sales orders
+        - Commission withdrawal management
+        - Interactive dashboard with charts (ECharts)
+        - Member card report (printable)
+        - Portal-ready architecture
+            """,
     'category': 'Sales/Sales',
     'author': 'Sel Studio',
     'website': 'https://selstudio.id',
+    'maintainer': 'Sel Studio',
+    'support': 'support@selstudio.id', 
     'depends': ['base', 'sale_management', 'mail','account'],
     'license': 'LGPL-3',
     'data': [
@@ -27,6 +41,7 @@
     ],
     'assets': {
         'web.assets_backend': [
+            'omni_referral_base/static/src/lib/echarts.min.js',
             'omni_referral_base/static/src/css/referral_tree.css',
             'omni_referral_base/static/src/css/dashboard.css',
             'omni_referral_base/static/src/xml/referral_tree_widget.xml',
