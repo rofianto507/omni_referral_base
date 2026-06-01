@@ -15,6 +15,7 @@
                 <field name="base_amount"/>
                 <field name="commission_amount"/>
                 <field name="state" widget="badge"
+                      decoration-warning="state == 'cancelled'"
                       decoration-muted="state == 'pending'"
                       decoration-success="state == 'approved'"
                       decoration-danger="state == 'rejected'"/>
@@ -77,6 +78,7 @@
                 <filter string="Pending" name="filter_pending" domain="[('state','=','pending')]"/>
                 <filter string="Approved" name="filter_approved" domain="[('state','=','approved')]"/>
                 <filter string="Paid" name="filter_paid" domain="[('state','=','paid')]"/>
+                <filter string="Cancelled" name="filter_cancelled" domain="[('state','=','cancelled')]"/>
                 <group>
                     <filter string="State" name="group_state" context="{'group_by':'state'}"/>
                     <filter string="Beneficiary" name="group_beneficiary" context="{'group_by':'beneficiary_member_id'}"/>

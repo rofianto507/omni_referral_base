@@ -25,6 +25,7 @@ class ReferralCommission(models.Model):
         ('pending', 'Pending'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
+        ('cancelled', 'Cancelled'),
     ], default='pending', required=True, tracking=True)
     
     _sql_constraints = [
@@ -46,3 +47,8 @@ class ReferralCommission(models.Model):
                 raise UserError(_("Only pending commissions can be rejected."))
             rec.state = 'rejected'
             rec.beneficiary_member_id._compute_commission_balance()
+            
+    def action_cancel(self):
+        for rec in self:
+            if rec.state == 'pending':
+                rec.state = 'cancelled'

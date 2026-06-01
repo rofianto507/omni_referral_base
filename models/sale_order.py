@@ -98,3 +98,10 @@ class SaleOrder(models.Model):
             'domain': [('sale_order_id', '=', self.id)],
             'context': {'default_sale_order_id': self.id},
         }
+    def action_cancel(self):
+        res = super().action_cancel()
+        for order in self:
+            order.referral_commission_ids.filtered(
+                lambda x: x.state == 'pending'
+            ).action_cancel()
+        return res
