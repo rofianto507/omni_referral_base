@@ -41,7 +41,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'omni_referral_base/static/src/lib/echarts.min.js',
+            'omni_referral_base/static/lib/echarts.min.js',
             'omni_referral_base/static/src/css/referral_tree.css',
             'omni_referral_base/static/src/css/dashboard.css',
             'omni_referral_base/static/src/xml/referral_tree_widget.xml',
