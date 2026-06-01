@@ -131,20 +131,16 @@
                                     <div class="o_top_member_row"
                                         t-att-data-member-id="m.id"
                                         t-on-click="onClickMember">
-                                        <!-- Rank -->
                                         <div class="o_rank_badge" t-att-class="m_index == 0 ? 'rank-gold' : m_index == 1 ? 'rank-silver' : m_index == 2 ? 'rank-bronze' : 'rank-default'">
                                             <t t-esc="m_index + 1"/>
                                         </div>
-                                        <!-- Avatar -->
                                         <img t-att-src="m.avatar_url"
                                              class="o_member_mini_avatar"
                                              onerror="this.src='/web/static/img/placeholder.png'"/>
-                                        <!-- Info -->
                                         <div class="o_member_mini_info">
                                             <div class="fw-semibold text-truncate" style="font-size:13px;" t-esc="m.name"/>
                                             <div class="text-muted" style="font-size:11px;font-family:monospace;" t-esc="m.member_code"/>
                                         </div>
-                                        <!-- Stats -->
                                         <div class="ms-auto text-end">
                                             <div class="fw-bold" style="font-size:13px;color:#71639e;"
                                                  t-esc="formatCurrency(m.commission_balance)"/>

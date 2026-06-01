@@ -10,9 +10,9 @@ class ReferralDashboard(models.AbstractModel):
 
     def _local_date_to_utc_range(self, d_from, d_to):
         """
-        Konversi date range dari timezone perusahaan ke UTC.
-        d_from : date — awal periode (00:00:00 local)
-        d_to   : date — akhir periode (23:59:59 local)
+       Convert local date range (d_from, d_to) to UTC datetime range for querying create_date fields.
+        d_from : date — start (00:00:00 local)
+        d_to   : date — end (23:59:59 local)
         Return : (datetime_utc_start, datetime_utc_end)
         """
         tz_name = self.env.company.partner_id.tz or self.env.user.tz or 'UTC'
@@ -53,7 +53,7 @@ class ReferralDashboard(models.AbstractModel):
         Withdraw = self.env['commission.withdraw']
         currency = self.env.company.currency_id
 
-        # Konversi ke UTC untuk query create_date
+        # convert local date range to UTC datetime range for accurate querying of create_date fields
         dt_from_utc, dt_to_utc = self._local_date_to_utc_range(date_from, date_to)
 
         # ── KPI ──────────────────────────────────────────────
@@ -69,7 +69,7 @@ class ReferralDashboard(models.AbstractModel):
 
         paid_withdrawals = Withdraw.search([
             ('state', '=', 'paid'),
-            ('date_paid', '>=', date_from),  # date field → tidak perlu konversi UTC
+            ('date_paid', '>=', date_from),  
             ('date_paid', '<=', date_to),
         ])
         total_withdrawal = sum(paid_withdrawals.mapped('amount'))

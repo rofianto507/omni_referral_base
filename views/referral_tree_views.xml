@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Client Action -->
     <record id="action_referral_tree" model="ir.actions.client">
         <field name="name">Referral Network Tree</field>
         <field name="tag">referral_tree_action</field>
     </record>
 
-    <!-- Inherit member form: tambah tombol View Network -->
+    <!-- Inherit member form: add button to view network -->
     <record id="view_referral_member_form_tree_btn" model="ir.ui.view">
         <field name="name">referral.member.form.tree.btn</field>
         <field name="model">referral.member</field>

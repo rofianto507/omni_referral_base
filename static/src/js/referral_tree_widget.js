@@ -12,7 +12,6 @@ class ReferralNode extends Component {
         onOpenMember: Function,
     };
     static template = "omni_referral_base.ReferralNode";
-    // ↓ wajib ada agar bisa rekursif render dirinya sendiri
     static components = {};
 
     setup() {
@@ -54,7 +53,6 @@ class ReferralNode extends Component {
     }
 }
 
-// daftarkan dirinya sendiri setelah class terdefinisi
 ReferralNode.components = { ReferralNode };
 
 // ── Main Tree View ─────────────────────────────────────────────────────────────
