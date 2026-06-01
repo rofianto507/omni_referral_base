@@ -42,6 +42,9 @@
         'views/menu.xml',
         'reports/member_card_report.xml',
     ],
+    'demo': [
+        'data/demo.xml',
+    ],
     'assets': {
         'web.assets_backend': [
             'omni_referral_base/static/lib/echarts.min.js',

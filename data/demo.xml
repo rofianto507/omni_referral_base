@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <!-- ══════════════════════════════════════════
+         COMMISSION RULES (3 Levels)
+    ══════════════════════════════════════════ -->
+    <record id="demo_commission_rule_l1" model="commission.rule">
+        <field name="level_depth">1</field>
+        <field name="commission_pct">5.0</field>
+    </record>
+    <record id="demo_commission_rule_l2" model="commission.rule">
+        <field name="level_depth">2</field>
+        <field name="commission_pct">3.0</field>
+    </record>
+    <record id="demo_commission_rule_l3" model="commission.rule">
+        <field name="level_depth">3</field>
+        <field name="commission_pct">1.0</field>
+    </record>
+
+    <!-- ══════════════════════════════════════════
+         RES.PARTNER
+    ══════════════════════════════════════════ -->
+    <record id="demo_partner_alice" model="res.partner">
+        <field name="name">Alice Johnson</field>
+        <field name="email">alice.johnson@demo.com</field>
+        <field name="phone">+1 415 000 0001</field>
+        <field name="is_company">False</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="demo_partner_brian" model="res.partner">
+        <field name="name">Brian Carter</field>
+        <field name="email">brian.carter@demo.com</field>
+        <field name="phone">+1 415 000 0002</field>
+        <field name="is_company">False</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="demo_partner_claire" model="res.partner">
+        <field name="name">Claire Dubois</field>
+        <field name="email">claire.dubois@demo.com</field>
+        <field name="phone">+33 6 00 00 00 03</field>
+        <field name="is_company">False</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+    <record id="demo_partner_david" model="res.partner">
+        <field name="name">David Müller</field>
+        <field name="email">david.mueller@demo.com</field>
+        <field name="phone">+49 170 000 0004</field>
+        <field name="is_company">False</field>
+        <field name="country_id" ref="base.de"/>
+    </record>
+    <record id="demo_partner_eva" model="res.partner">
+        <field name="name">Eva Martinez</field>
+        <field name="email">eva.martinez@demo.com</field>
+        <field name="phone">+34 600 000 005</field>
+        <field name="is_company">False</field>
+        <field name="country_id" ref="base.es"/>
+    </record>
+    <record id="demo_partner_frank" model="res.partner">
+        <field name="name">Frank Wilson</field>
+        <field name="email">frank.wilson@demo.com</field>
+        <field name="phone">+44 7700 000006</field>
+        <field name="is_company">False</field>
+        <field name="country_id" ref="base.gb"/>
+    </record>
+
+    <!-- ══════════════════════════════════════════
+         REFERRAL MEMBERS
+         Hierarchy:
+           Alice (top)
+           ├── Brian
+           │   └── Claire
+           │       └── David
+           └── Eva
+               └── Frank
+    ══════════════════════════════════════════ -->
+
+    <!-- Level 0 — Top member, no sponsor -->
+    <record id="demo_member_alice" model="referral.member">
+        <field name="partner_id" ref="demo_partner_alice"/>
+        <field name="member_code">MEM00001</field>
+        <field name="join_date">2024-01-01</field>
+        <field name="state">active</field>
+        <field name="activated_at">2024-01-01 00:00:00</field>
+    </record>
+
+    <!-- Level 1 — Brian, sponsored by Alice -->
+    <record id="demo_member_brian" model="referral.member">
+        <field name="partner_id" ref="demo_partner_brian"/>
+        <field name="member_code">MEM00002</field>
+        <field name="sponsor_id" ref="demo_member_alice"/>
+        <field name="join_date">2024-02-01</field>
+        <field name="state">active</field>
+        <field name="activated_at">2024-02-01 00:00:00</field>
+    </record>
+
+    <!-- Level 1 — Eva, sponsored by Alice -->
+    <record id="demo_member_eva" model="referral.member">
+        <field name="partner_id" ref="demo_partner_eva"/>
+        <field name="member_code">MEM00003</field>
+        <field name="sponsor_id" ref="demo_member_alice"/>
+        <field name="join_date">2024-02-15</field>
+        <field name="state">active</field>
+        <field name="activated_at">2024-02-15 00:00:00</field>
+    </record>
+
+    <!-- Level 2 — Claire, sponsored by Brian -->
+    <record id="demo_member_claire" model="referral.member">
+        <field name="partner_id" ref="demo_partner_claire"/>
+        <field name="member_code">MEM00004</field>
+        <field name="sponsor_id" ref="demo_member_brian"/>
+        <field name="join_date">2024-03-01</field>
+        <field name="state">active</field>
+        <field name="activated_at">2024-03-01 00:00:00</field>
+    </record>
+
+    <!-- Level 2 — Frank, sponsored by Eva -->
+    <record id="demo_member_frank" model="referral.member">
+        <field name="partner_id" ref="demo_partner_frank"/>
+        <field name="member_code">MEM00005</field>
+        <field name="sponsor_id" ref="demo_member_eva"/>
+        <field name="join_date">2024-03-10</field>
+        <field name="state">active</field>
+        <field name="activated_at">2024-03-10 00:00:00</field>
+    </record>
+
+    <!-- Level 3 — David, sponsored by Claire -->
+    <record id="demo_member_david" model="referral.member">
+        <field name="partner_id" ref="demo_partner_david"/>
+        <field name="member_code">MEM00006</field>
+        <field name="sponsor_id" ref="demo_member_claire"/>
+        <field name="join_date">2024-04-01</field>
+        <field name="state">active</field>
+        <field name="activated_at">2024-04-01 00:00:00</field>
+    </record>
+
+</data>
+</odoo>
