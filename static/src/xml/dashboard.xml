@@ -114,7 +114,7 @@
                     <!-- Top 5 Members -->
                     <div class="o_dashboard_card">
                         <div class="o_card_header">
-                            <i class="fa fa-trophy me-2" style="color:#d97706;"/>
+                            <i class="fa fa-trophy me-2" style="color:#71639e;"/>
                             <span class="fw-semibold">Top 5 Members</span>
                             <span class="text-muted ms-1" style="font-size:11px;">by commission balance</span>
                         </div>
@@ -127,7 +127,10 @@
                         <t t-else="">
                             <div class="o_top_members_list">
                                 <t t-foreach="state.data.top_members" t-as="m" t-key="m.id">
-                                    <div class="o_top_member_row" t-on-click="() => openMember(m.id)">
+                                
+                                    <div class="o_top_member_row"
+                                        t-att-data-member-id="m.id"
+                                        t-on-click="onClickMember">
                                         <!-- Rank -->
                                         <div class="o_rank_badge" t-att-class="m_index == 0 ? 'rank-gold' : m_index == 1 ? 'rank-silver' : m_index == 2 ? 'rank-bronze' : 'rank-default'">
                                             <t t-esc="m_index + 1"/>
@@ -143,7 +146,7 @@
                                         </div>
                                         <!-- Stats -->
                                         <div class="ms-auto text-end">
-                                            <div class="fw-bold" style="font-size:13px;color:#7c3aed;"
+                                            <div class="fw-bold" style="font-size:13px;color:#71639e;"
                                                  t-esc="formatCurrency(m.commission_balance)"/>
                                             <div class="text-muted" style="font-size:10px;">
                                                 <t t-esc="m.downline_count"/> downline(s)
@@ -158,7 +161,7 @@
                     <!-- Pending Commissions -->
                     <div class="o_dashboard_card">
                         <div class="o_card_header">
-                            <i class="fa fa-clock-o me-2" style="color:#dc2626;"/>
+                            <i class="fa fa-clock-o me-2" style="color:#71639e;"/>
                             <span class="fw-semibold">Pending Commissions</span>
                             <span class="ms-auto">
                                 <span class="badge rounded-pill bg-warning text-dark" style="font-size:10px;"
@@ -202,12 +205,21 @@
                                                 <td class="text-muted" style="font-size:11px;" t-esc="c.create_date"/>
                                                 <td>
                                                     <div class="d-flex gap-1">
+                                                        <!-- Approve button -->
                                                         <button class="btn btn-xs btn-success"
-                                                                t-on-click="() => approveCommission(c.id)">
+                                                                t-att-data-commission-id="c.id"
+                                                                t-att-data-member-name="c.beneficiary"
+                                                                t-att-data-amount="formatCurrency(c.commission_amount)"
+                                                                t-on-click="onClickApprove">
                                                             <i class="fa fa-check"/>
                                                         </button>
+
+                                                        <!-- Reject button -->
                                                         <button class="btn btn-xs btn-danger"
-                                                                t-on-click="() => rejectCommission(c.id)">
+                                                                t-att-data-commission-id="c.id"
+                                                                t-att-data-member-name="c.beneficiary"
+                                                                t-att-data-amount="formatCurrency(c.commission_amount)"
+                                                                t-on-click="onClickReject">
                                                             <i class="fa fa-times"/>
                                                         </button>
                                                     </div>

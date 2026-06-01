@@ -3,6 +3,7 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Component, useState, onWillStart, onMounted, onPatched, useRef } from "@odoo/owl";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 class ReferralDashboard extends Component {
     static template = "omni_referral_base.ReferralDashboard";
@@ -10,6 +11,8 @@ class ReferralDashboard extends Component {
 
     setup() {
         this.orm = useService("orm");
+        this.actionService = useService("action");
+        this.dialogService = useService("dialog");
         this.state = useState({
             loading: true,
             period: "this_month",
@@ -172,11 +175,11 @@ class ReferralDashboard extends Component {
                 smooth: true,
                 symbol: "circle",
                 symbolSize: 8,
-                lineStyle: { color: "#059669", width: 3 },
-                itemStyle: { color: "#059669", borderWidth: 2, borderColor: "#fff" },
+                lineStyle: { color: "#71639e", width: 3 },
+                itemStyle: { color: "#a78bfa", borderWidth: 2, borderColor: "#fff" },
                 areaStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        { offset: 0, color: "rgba(5,150,105,0.25)" },
+                        { offset: 0, color: "rgba(97, 5, 150, 0.25)" },
                         { offset: 1, color: "rgba(5,150,105,0.02)" },
                     ]),
                 },
@@ -190,10 +193,12 @@ class ReferralDashboard extends Component {
             }],
         });
     }
-    
+
     // ── Actions ──────────────────────────────────────────────────────────────
-    openMember(memberId) {
-        this.action.doAction({
+    onClickMember(ev) {
+        const memberId = parseInt(ev.currentTarget.dataset.memberId);
+        if (!memberId) return;
+        this.actionService.doAction({
             type: "ir.actions.act_window",
             res_model: "referral.member",
             res_id: memberId,
@@ -202,14 +207,41 @@ class ReferralDashboard extends Component {
         });
     }
 
-    async approveCommission(commissionId) {
-        await this.orm.call("referral.dashboard", "action_approve_commission", [commissionId]);
-        await this.loadData();
+    onClickApprove(ev) {
+        const id = parseInt(ev.currentTarget.dataset.commissionId);
+        const member = ev.currentTarget.dataset.memberName || "";
+        const amount = ev.currentTarget.dataset.amount || "";
+        if (!id) return;
+        this.dialogService.add(ConfirmationDialog, {
+            title: "Approve Commission",
+            body: `Approve commission ${amount} for ${member}? This action cannot be undone.`,
+            confirmLabel: "Approve",
+            cancelLabel: "Cancel",
+            confirm: async () => {
+                await this.orm.call("referral.dashboard", "action_approve_commission", [id]);
+                await this.loadData();
+            },
+            cancel: () => {},
+        });
     }
 
-    async rejectCommission(commissionId) {
-        await this.orm.call("referral.dashboard", "action_reject_commission", [commissionId]);
-        await this.loadData();
+    onClickReject(ev) {
+        const id = parseInt(ev.currentTarget.dataset.commissionId);
+        const member = ev.currentTarget.dataset.memberName || "";
+        const amount = ev.currentTarget.dataset.amount || "";
+        if (!id) return;
+        this.dialogService.add(ConfirmationDialog, {
+            title: "Reject Commission",
+            body: `Reject commission ${amount} for ${member}? This action cannot be undone.`,
+            confirmLabel: "Reject",
+            cancelLabel: "Cancel",
+            confirmClass: "btn-danger",
+            confirm: async () => {
+                await this.orm.call("referral.dashboard", "action_reject_commission", [id]);
+                await this.loadData();
+            },
+            cancel: () => {},
+        });
     }
 
     _fmt(val) {
