@@ -361,6 +361,7 @@ class ReferralMember(models.Model):
                 'state': m.state,
                 'commission_balance': m.commission_balance,
                 'downline_count': m.downline_count,
+                'avatar_url': '/web/image/res.partner/%d/image_128' % m.partner_id.id if m.partner_id else False,
                 'children': [],
             }
             if current_depth < max_depth:

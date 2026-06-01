@@ -19,10 +19,22 @@
                         <i class="fa fa-circle o_referral_leaf"/>
                     </t>
                 </span>
-
-                <!-- Avatar icon -->
-                <span class="o_referral_avatar">
-                    <i class="fa fa-user-circle"/>
+                <!-- Avatar photo from res.partner -->
+                <span class="o_referral_avatar_wrap">
+                    <t t-if="props.node.avatar_url">
+                        <img t-att-src="props.node.avatar_url"
+                             class="o_referral_avatar_img"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                             alt=""/>
+                        <span class="o_referral_avatar_fallback" style="display:none;">
+                            <i class="fa fa-user"/>
+                        </span>
+                    </t>
+                    <t t-else="">
+                        <span class="o_referral_avatar_fallback">
+                            <i class="fa fa-user"/>
+                        </span>
+                    </t>
                 </span>
 
                 <!-- Info -->

@@ -53,10 +53,33 @@
     color: #d1d5db !important;
 }
 
-.o_referral_avatar {
-    font-size: 22px;
-    color: #9ca3af;
+/* ── Avatar ── */
+.o_referral_avatar_wrap {
     flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    position: relative;
+}
+
+.o_referral_avatar_img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+    display: block;
+}
+
+.o_referral_avatar_fallback {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: #9ca3af;
 }
 
 .o_referral_info {
