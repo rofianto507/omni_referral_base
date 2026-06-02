@@ -1,134 +1,283 @@
 <section class="oe_container">
 
-    <!-- Hero Banner -->
+    <!-- ── Hero Banner ── -->
     <div class="oe_row oe_spaced">
         <div class="oe_span12">
-            <img src="banner.png" class="oe_picture oe_screenshot" alt="Omni Referral Banner"/>
+            <img src="banner.png"
+                 style="display:block;width:100%;height:auto;border-radius:8px;"
+                 alt="Omni Referral Base Banner"/>
         </div>
     </div>
 
-    <!-- Overview -->
+    <!-- ── Tagline ── -->
     <div class="oe_row oe_spaced">
-        <div class="oe_span12">
-            <h2 class="oe_slogan">Omni Referral Base</h2>
-            <h3 class="oe_slogan">Multi-Level Referral Network &amp; Commission Management</h3>
-            <p class="oe_mt32 text-center" style="font-size:15px;">
-                Build and manage a complete multi-tier referral network in Odoo 19.
-                Track members, automate commission calculations, visualize your referral tree,
-                and monitor performance through an interactive dashboard.
+        <div class="oe_span12" style="text-align:center;">
+            <h2 class="oe_slogan" style="color:#1f2937;">Omni Referral Base</h2>
+            <h3 class="oe_slogan" style="color:#71639e;">
+                Multi-Level Referral Network &amp; Commission Management for Odoo 19
+            </h3>
+            <p style="font-size:15px;color:#4b5563;max-width:700px;margin:16px auto 0;">
+                Build, automate, and monitor a complete multi-tier referral network directly inside Odoo.
+                From member registration to commission payout — everything in one place.
             </p>
         </div>
     </div>
 
     <div class="oe_separator"/>
 
-    <!-- Key Features -->
+    <!-- ── Key Features ── -->
     <div class="oe_row oe_spaced">
-        <h2 class="oe_slogan" style="color:#71639e;">✨ Key Features</h2>
+        <div class="oe_span12" style="text-align:center;">
+            <h2 style="color:#71639e;">✨ Key Features</h2>
+        </div>
+    </div>
 
+    <div class="oe_row oe_spaced">
         <div class="oe_span6">
-            <div class="oe_demo_footer text-center" style="padding:20px;">
+            <div style="padding:20px;text-align:center;">
+                <span class="fa fa-bolt fa-3x" style="color:#71639e;"/>
+                <h4 style="margin-top:12px;">Auto Commission Calculation</h4>
+                <p style="color:#6b7280;">
+                    Commissions are automatically calculated and distributed across the entire
+                    upline chain the moment a Sales Order is confirmed.
+                </p>
+            </div>
+        </div>
+        <div class="oe_span6">
+            <div style="padding:20px;text-align:center;">
                 <span class="fa fa-sitemap fa-3x" style="color:#71639e;"/>
-                <h4>Multi-Level Commission Rules</h4>
-                <p>Define commission percentages for each referral depth level.
-                Supports unlimited levels with flexible rule configuration.</p>
+                <h4 style="margin-top:12px;">Multi-Level Commission Rules</h4>
+                <p style="color:#6b7280;">
+                    Define commission percentages per referral depth level.
+                    Unlimited levels with unique percentage per level.
+                </p>
             </div>
         </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
         <div class="oe_span6">
-            <div class="oe_demo_footer text-center" style="padding:20px;">
+            <div style="padding:20px;text-align:center;">
                 <span class="fa fa-users fa-3x" style="color:#71639e;"/>
-                <h4>Referral Member Management</h4>
-                <p>Complete member lifecycle management — Draft, Active, Suspended,
-                Terminated — with sponsor hierarchy tracking.</p>
+                <h4 style="margin-top:12px;">Referral Member Management</h4>
+                <p style="color:#6b7280;">
+                    Complete member lifecycle — Draft, Active, Suspended, Terminated —
+                    with sponsor hierarchy, member code, and contact linking.
+                </p>
             </div>
         </div>
-
         <div class="oe_span6">
-            <div class="oe_demo_footer text-center" style="padding:20px;">
+            <div style="padding:20px;text-align:center;">
                 <span class="fa fa-bar-chart fa-3x" style="color:#71639e;"/>
-                <h4>Interactive Dashboard</h4>
-                <p>Real-time KPI cards, commission trend charts, member growth charts,
-                top members leaderboard, and pending commission approval — all in one view.</p>
+                <h4 style="margin-top:12px;">Interactive Dashboard</h4>
+                <p style="color:#6b7280;">
+                    Real-time KPI cards, commission trend &amp; member growth charts,
+                    top members leaderboard, and one-click pending commission approval.
+                </p>
             </div>
         </div>
-        <div class="oe_span6">
-            <div class="oe_demo_footer text-center" style="padding:20px;">
-                <span class="fa fa-tree fa-3x" style="color:#71639e;"/>
-                <h4>Referral Tree Visualization</h4>
-                <p>Interactive expandable tree view to visualize the entire referral
-                network for any member, with member status and commission balance.</p>
-            </div>
-        </div>
+    </div>
 
+    <div class="oe_row oe_spaced">
         <div class="oe_span6">
-            <div class="oe_demo_footer text-center" style="padding:20px;">
-                <span class="fa fa-money fa-3x" style="color:#71639e;"/>
-                <h4>Commission Withdrawal</h4>
-                <p>Members can request commission withdrawals. Full approval workflow
-                with balance tracking before and after withdrawal.</p>
+            <div style="padding:20px;text-align:center;">
+                <span class="fa fa-share-alt fa-3x" style="color:#71639e;"/>
+                <h4 style="margin-top:12px;">Referral Tree Visualization</h4>
+                <p style="color:#6b7280;">
+                    Interactive expandable network tree — see the full downline hierarchy
+                    with status badges, member avatars, and commission balance.
+                </p>
             </div>
         </div>
         <div class="oe_span6">
-            <div class="oe_demo_footer text-center" style="padding:20px;">
+            <div style="padding:20px;text-align:center;">
+                <span class="fa fa-money fa-3x" style="color:#71639e;"/>
+                <h4 style="margin-top:12px;">Commission Withdrawal</h4>
+                <p style="color:#6b7280;">
+                    Full withdrawal request &amp; approval workflow. Balance tracked
+                    automatically. Commissions auto-cancelled if Sales Order is cancelled.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+            <div style="padding:20px;text-align:center;">
                 <span class="fa fa-id-card fa-3x" style="color:#71639e;"/>
-                <h4>Member Card Report</h4>
-                <p>Printable digital member card for each active member,
-                complete with member code and contact details.</p>
+                <h4 style="margin-top:12px;">Member Card Report</h4>
+                <p style="color:#6b7280;">
+                    Printable digital member card for each active member,
+                    complete with member code and contact details.
+                </p>
+            </div>
+        </div>
+        <div class="oe_span6">
+            <div style="padding:20px;text-align:center;">
+                <span class="fa fa-plug fa-3x" style="color:#71639e;"/>
+                <h4 style="margin-top:12px;">Native Odoo Integration</h4>
+                <p style="color:#6b7280;">
+                    Deeply integrated with Odoo Sales, Contacts, Accounting, and Settings.
+                    No third-party service required — fully self-hosted.
+                </p>
             </div>
         </div>
     </div>
 
     <div class="oe_separator"/>
 
-    <!-- How it Works -->
+    <!-- ── Screenshots ── -->
     <div class="oe_row oe_spaced">
-        <h2 class="oe_slogan" style="color:#71639e;">⚙️ How It Works</h2>
+        <div class="oe_span12" style="text-align:center;">
+            <h2 style="color:#71639e;">📸 Screenshots</h2>
+        </div>
+    </div>
+
+    <!-- Screenshot full width — Dashboard -->
+    <div class="oe_row oe_spaced">
         <div class="oe_span12">
-            <ol style="font-size:14px;line-height:2;">
-                <li><b>Set up Commission Rules</b> — Define percentage per level (Level 1, Level 2, etc.)</li>
+            <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
+                Interactive Dashboard
+            </p>
+            <img src="screenshot_dashboard.png"
+                 style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
+                 alt="Dashboard"/>
+        </div>
+    </div>
+
+    <!-- Screenshot full width — Tree -->
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12">
+            <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
+                Referral Network Tree
+            </p>
+            <img src="screenshot_tree.png"
+                 style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
+                 alt="Referral Tree"/>
+        </div>
+    </div>
+
+    <!-- Screenshot 2 kolom — Members & Commissions -->
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+            <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
+                Member List
+            </p>
+            <img src="screenshot_members.png"
+                 style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
+                 alt="Member List"/>
+        </div>
+        <div class="oe_span6">
+            <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
+                Commission List
+            </p>
+            <img src="screenshot_commission.png"
+                 style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
+                 alt="Commission List"/>
+        </div>
+    </div>
+
+    <!-- Screenshot full width — Rules -->
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12">
+            <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
+                Commission Rules Configuration
+            </p>
+            <img src="screenshot_rules.png"
+                 style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
+                 alt="Commission Rules"/>
+        </div>
+    </div>
+
+    <div class="oe_separator"/>
+
+    <!-- ── How it Works ── -->
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12" style="text-align:center;">
+            <h2 style="color:#71639e;">⚙️ How It Works</h2>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12">
+            <ol style="font-size:14px;line-height:2.2;max-width:700px;margin:0 auto;">
+                <li><b>Set up Commission Rules</b> — Define percentage per level (Level 1 = 5%, Level 2 = 3%, etc.)</li>
                 <li><b>Register Members</b> — Create referral members linked to existing Odoo contacts</li>
-                <li><b>Assign Sponsor</b> — Connect each member to their sponsor to build the network</li>
-                <li><b>Link to Sales Orders</b> — Assign referral member to a sales order</li>
-                <li><b>Track Commissions</b> — Approve or reject commissions from the dashboard</li>
-                <li><b>Process Withdrawals</b> — Members submit withdrawal requests, manager approves</li>
+                <li><b>Assign Sponsor</b> — Connect each member to their upline to build the network</li>
+                <li><b>Sales Order Confirmed</b> — Commissions automatically generated across the upline chain</li>
+                <li><b>Approve Commissions</b> — Manager approves or rejects from dashboard or commission list</li>
+                <li><b>Process Withdrawals</b> — Members submit withdrawal requests, manager reviews and pays</li>
+                <li><b>Sales Order Cancelled</b> — All pending commissions automatically cancelled</li>
             </ol>
         </div>
     </div>
 
     <div class="oe_separator"/>
 
-    <!-- Technical Info -->
+    <!-- ── What's Included ── -->
     <div class="oe_row oe_spaced">
-        <h2 class="oe_slogan" style="color:#71639e;">🔧 Technical Information</h2>
+        <div class="oe_span12" style="text-align:center;">
+            <h2 style="color:#71639e;">📦 What's Included</h2>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+            <ul style="font-size:14px;line-height:2.2;list-style:none;padding:0;">
+                <li>✅ Full module source code (OPL-1)</li>
+                <li>✅ Lifetime access to purchased version</li>
+                <li>✅ Demo data included</li>
+                <li>✅ Compatible with Odoo 19 Community &amp; Enterprise</li>
+            </ul>
+        </div>
+        <div class="oe_span6">
+            <ul style="font-size:14px;line-height:2.2;list-style:none;padding:0;">
+                <li>✅ Email support via support@selstudio.id</li>
+                <li>✅ Bug fix updates included</li>
+                <li>⬜ Member Portal <span style="color:#9ca3af;font-size:12px;">(coming in next version)</span></li>
+                <li>⬜ Member Tier System <span style="color:#9ca3af;font-size:12px;">(coming soon)</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="oe_separator"/>
+
+    <!-- ── Technical Info ── -->
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12" style="text-align:center;">
+            <h2 style="color:#71639e;">🔧 Technical Information</h2>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
         <div class="oe_span6">
             <table class="table table-bordered" style="font-size:13px;">
                 <tr><th>Odoo Version</th><td>19.0</td></tr>
-                <tr><th>License</th><td>LGPL-3</td></tr>
+                <tr><th>License</th><td>OPL-1 (Odoo Proprietary)</td></tr>
                 <tr><th>Dependencies</th><td>base, sale_management, mail, account</td></tr>
                 <tr><th>Frontend</th><td>OWL JS (Odoo Web Library)</td></tr>
-                <tr><th>Charts</th><td>Apache ECharts 5</td></tr>
+                <tr><th>Charts</th><td>Apache ECharts 5 (bundled, no CDN)</td></tr>
             </table>
         </div>
         <div class="oe_span6">
             <table class="table table-bordered" style="font-size:13px;">
-                <tr><th>Models</th><td>referral.member, referral.commission, commission.rule, commission.withdraw</td></tr>
+                <tr><th>Models</th><td>referral.member, referral.commission,<br/>commission.rule, commission.withdraw</td></tr>
                 <tr><th>Views</th><td>List, Form, Kanban, Dashboard, Tree Widget</td></tr>
                 <tr><th>Reports</th><td>Member Card (HTML/PDF)</td></tr>
                 <tr><th>Author</th><td>Sel Studio</td></tr>
+                <tr><th>Support</th><td>support@selstudio.id</td></tr>
             </table>
         </div>
     </div>
 
     <div class="oe_separator"/>
 
-    <!-- Support -->
+    <!-- ── Support ── -->
     <div class="oe_row oe_spaced">
-        <div class="oe_span12 text-center">
-            <h3 style="color:#71639e;">💬 Support &amp; Contact</h3>
-            <p style="font-size:14px;">
-                For support, bug reports, or feature requests, please visit our website
-                or contact us directly.<br/>
-                🌐 <a href="https://selstudio.id">https://selstudio.id</a>
+        <div class="oe_span12" style="text-align:center;">
+            <h2 style="color:#71639e;">💬 Support &amp; Contact</h2>
+            <p style="font-size:14px;color:#4b5563;">
+                For support, bug reports, or feature requests, reach us at:<br/><br/>
+                📧 <a href="mailto:support@selstudio.id">support@selstudio.id</a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                🌐 <a href="https://selstudio.id" target="_blank">https://selstudio.id</a>
             </p>
         </div>
     </div>
