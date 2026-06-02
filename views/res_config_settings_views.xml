@@ -21,13 +21,13 @@
                             <field name="referral_auto_approve_active_upline"/>
                         </setting>
                         <setting string="Skip Commission for Inactive Upline"
-                                 help="If enabled, commission is NOT created for inactive uplines (no confirmed SO within active period). If disabled, commission stays Pending for manual review."
-                                 attrs="{'invisible': [('referral_auto_approve_active_upline', '=', False)]}">
+                                 help="If enabled, commission is NOT created for inactive uplines. If disabled, commission stays Pending for manual review."
+                                 invisible="not referral_auto_approve_active_upline">
                             <field name="referral_skip_inactive_upline"/>
                         </setting>
                         <setting string="Active Period (Days)"
-                                help="Number of days to look back when checking if an upline has been active. Default is 30 days."
-                                attrs="{'invisible': [('referral_auto_approve_active_upline', '=', False)]}">
+                                 help="Number of days to look back when checking if an upline is active. e.g. 7 = last week, 30 = last month (default)."
+                                 invisible="not referral_auto_approve_active_upline">
                             <field name="referral_active_upline_days"/>
                         </setting>
                     </block>
