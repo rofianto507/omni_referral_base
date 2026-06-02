@@ -104,6 +104,30 @@
     <div class="oe_row oe_spaced">
         <div class="oe_span6">
             <div style="padding:20px;text-align:center;">
+                <span class="fa fa-sliders fa-3x" style="color:#71639e;"/>
+                <h4 style="margin-top:12px;">Configurable Commission Behavior</h4>
+                <p style="color:#6b7280;">
+                    Control how commissions are handled for inactive uplines — auto-approve
+                    active uplines, skip inactive ones entirely, or keep them pending for
+                    manual review. Active period configurable in days (e.g. 7, 30, 90 days).
+                </p>
+            </div>
+        </div>
+        <div class="oe_span6">
+            <div style="padding:20px;text-align:center;">
+                <span class="fa fa-cog fa-3x" style="color:#71639e;"/>
+                <h4 style="margin-top:12px;">Flexible Settings</h4>
+                <p style="color:#6b7280;">
+                    Customize member code prefix, commission auto-approval rules,
+                    inactive upline handling, and active period directly from Odoo Settings.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+            <div style="padding:20px;text-align:center;">
                 <span class="fa fa-id-card fa-3x" style="color:#71639e;"/>
                 <h4 style="margin-top:12px;">Member Card Report</h4>
                 <p style="color:#6b7280;">
@@ -133,7 +157,6 @@
         </div>
     </div>
 
-    <!-- Screenshot full width — Dashboard -->
     <div class="oe_row oe_spaced">
         <div class="oe_span12">
             <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
@@ -145,7 +168,6 @@
         </div>
     </div>
 
-    <!-- Screenshot full width — Tree -->
     <div class="oe_row oe_spaced">
         <div class="oe_span12">
             <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
@@ -157,7 +179,6 @@
         </div>
     </div>
 
-    <!-- Screenshot 2 kolom — Members & Commissions -->
     <div class="oe_row oe_spaced">
         <div class="oe_span6">
             <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
@@ -177,15 +198,22 @@
         </div>
     </div>
 
-    <!-- Screenshot full width — Rules -->
     <div class="oe_row oe_spaced">
-        <div class="oe_span12">
+        <div class="oe_span6">
             <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
                 Commission Rules Configuration
             </p>
             <img src="screenshot_rules.png"
                  style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
                  alt="Commission Rules"/>
+        </div>
+        <div class="oe_span6">
+            <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
+                Commission Settings
+            </p>
+            <img src="screenshot_settings.png"
+                 style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
+                 alt="Settings"/>
         </div>
     </div>
 
@@ -200,11 +228,12 @@
     <div class="oe_row oe_spaced">
         <div class="oe_span12">
             <ol style="font-size:14px;line-height:2.2;max-width:700px;margin:0 auto;">
+                <li><b>Configure Settings</b> — Set member code prefix, commission auto-approval rules, and active period in days</li>
                 <li><b>Set up Commission Rules</b> — Define percentage per level (Level 1 = 5%, Level 2 = 3%, etc.)</li>
                 <li><b>Register Members</b> — Create referral members linked to existing Odoo contacts</li>
                 <li><b>Assign Sponsor</b> — Connect each member to their upline to build the network</li>
-                <li><b>Sales Order Confirmed</b> — Commissions automatically generated across the upline chain</li>
-                <li><b>Approve Commissions</b> — Manager approves or rejects from dashboard or commission list</li>
+                <li><b>Sales Order Confirmed</b> — Commissions automatically generated; active uplines get auto-approved, inactive uplines get pending or skipped based on settings</li>
+                <li><b>Approve Commissions</b> — Manager approves or rejects pending commissions from dashboard or commission list</li>
                 <li><b>Process Withdrawals</b> — Members submit withdrawal requests, manager reviews and pays</li>
                 <li><b>Sales Order Cancelled</b> — All pending commissions automatically cancelled</li>
             </ol>
@@ -233,7 +262,7 @@
                 <li>✅ Email support via support@selstudio.id</li>
                 <li>✅ Bug fix updates included</li>
                 <li>⬜ Member Portal <span style="color:#9ca3af;font-size:12px;">(coming in next version)</span></li>
-                <li>⬜ Member Tier System <span style="color:#9ca3af;font-size:12px;">(coming soon)</span></li>
+                 
             </ul>
         </div>
     </div>
