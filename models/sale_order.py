@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -37,12 +38,37 @@ class SaleOrder(models.Model):
         for rec in self:
             rec.referral_commission_count = len(rec.referral_commission_ids)
 
+    def _is_upline_active_seller(self, upline):
+        """
+        Check if the upline has any confirmed sales orders in the past month.
+        This is used to determine whether to auto-approve the commission or set it to pending for manual review.
+        """
+        one_month_ago = date.today() - relativedelta(months=1)
+        partner = upline.partner_id
+        if not partner:
+            return False
+        confirmed_so = self.env['sale.order'].search_count([
+            ('referral_member_id', '=', upline.id), 
+            ('state', 'in', ['sale', 'done']),
+            ('date_order', '>=', one_month_ago),
+            ('id', '!=', self.id),  # exclude current order to prevent self-counting when confirming the same order again
+        ])
+        return confirmed_so > 0
+    
     def action_confirm(self):
         res = super().action_confirm()
         for order in self:
             order._generate_referral_commissions()
         return res
-
+    
+    def action_cancel(self):
+        res = super().action_cancel()
+        for order in self:
+            order.referral_commission_ids.filtered(
+                lambda x: x.state == 'pending'
+            ).action_cancel()
+        return res
+    
     def _generate_referral_commissions(self):
         self.ensure_one()
         if not self.referral_member_id:
@@ -73,6 +99,9 @@ class SaleOrder(models.Model):
 
             commission_amount = base_amount * rule.commission_pct / 100.0
             if commission_amount > 0:
+                # if upline has confirmed sales in the past month, auto-approve the commission; otherwise, set to pending for manual review
+                auto_approved = self._is_upline_active_seller(upline)
+                commission_state = 'approved' if auto_approved else 'pending'
                 self.env['referral.commission'].create({
                     'sale_order_id': self.id,
                     'source_member_id': self.referral_member_id.id,
@@ -83,8 +112,10 @@ class SaleOrder(models.Model):
                     'commission_pct': rule.commission_pct,
                     'commission_amount': commission_amount,
                     'currency_id': self.currency_id.id,
-                    'state': 'pending',
+                    'state': commission_state,
                 })
+                if auto_approved:
+                    upline._compute_commission_balance()
 
             current_member = upline
 
@@ -98,10 +129,4 @@ class SaleOrder(models.Model):
             'domain': [('sale_order_id', '=', self.id)],
             'context': {'default_sale_order_id': self.id},
         }
-    def action_cancel(self):
-        res = super().action_cancel()
-        for order in self:
-            order.referral_commission_ids.filtered(
-                lambda x: x.state == 'pending'
-            ).action_cancel()
-        return res
+    
