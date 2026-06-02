@@ -38,22 +38,25 @@ class SaleOrder(models.Model):
         for rec in self:
             rec.referral_commission_count = len(rec.referral_commission_ids)
 
-    def _is_upline_active_seller(self, upline):
+    def _get_referral_config(self):
+        ICP = self.env['ir.config_parameter'].sudo()
+        return {
+            'auto_approve' : ICP.get_param('omni_referral_base.auto_approve_active_upline', 'True') == 'True',
+            'skip_inactive': ICP.get_param('omni_referral_base.skip_inactive_upline', 'False') == 'True',
+            'active_days'  : int(ICP.get_param('omni_referral_base.active_upline_days', 30)),
+        }
+    def _is_upline_active_seller(self, upline, active_days=30):
         """
-        Check if the upline has any confirmed sales orders in the past month.
-        This is used to determine whether to auto-approve the commission or set it to pending for manual review.
+        Check if the upline has any confirmed sales orders in the past `active_days` days. This is used to determine if the commission can be auto-approved.
         """
-        one_month_ago = date.today() - relativedelta(months=1)
-        partner = upline.partner_id
-        if not partner:
-            return False
-        confirmed_so = self.env['sale.order'].search_count([
-            ('referral_member_id', '=', upline.id), 
+        from datetime import date, timedelta
+        cutoff = date.today() - timedelta(days=active_days)
+        return self.env['sale.order'].search_count([
+            ('referral_member_id', '=', upline.id),
             ('state', 'in', ['sale', 'done']),
-            ('date_order', '>=', one_month_ago),
-            ('id', '!=', self.id),  # exclude current order to prevent self-counting when confirming the same order again
-        ])
-        return confirmed_so > 0
+            ('date_order', '>=', cutoff),
+            ('id', '!=', self.id),
+        ]) > 0
     
     def action_confirm(self):
         res = super().action_confirm()
@@ -74,7 +77,6 @@ class SaleOrder(models.Model):
         if not self.referral_member_id:
             return
 
-        #remove existing pending commissions for this order to avoid duplicates if order is confirmed again
         self.referral_commission_ids.filtered(
             lambda x: x.state == 'pending'
         ).unlink()
@@ -87,34 +89,48 @@ class SaleOrder(models.Model):
         if base_amount <= 0:
             return
 
+        # Baca config sekali saja
+        cfg = self._get_referral_config()
+
         current_member = self.referral_member_id
         for rule in rules:
             upline = current_member.sponsor_id
             if not upline:
                 break
-            #skip if upline is not active, but continue to check next upline in the hierarchy
+
             if upline.state != 'active':
                 current_member = upline
                 continue
 
+            # Cek aktivitas upline jika fitur aktif
+            if cfg['auto_approve']:
+                upline_active = self._is_upline_active_seller(upline, cfg['active_days'])
+
+                # Skip: tidak buat record komisi sama sekali
+                if not upline_active and cfg['skip_inactive']:
+                    current_member = upline
+                    continue
+
+                commission_state = 'approved' if upline_active else 'pending'
+            else:
+                # Fitur mati → semua pending seperti biasa
+                commission_state = 'pending'
+
             commission_amount = base_amount * rule.commission_pct / 100.0
             if commission_amount > 0:
-                # if upline has confirmed sales in the past month, auto-approve the commission; otherwise, set to pending for manual review
-                auto_approved = self._is_upline_active_seller(upline)
-                commission_state = 'approved' if auto_approved else 'pending'
                 self.env['referral.commission'].create({
-                    'sale_order_id': self.id,
-                    'source_member_id': self.referral_member_id.id,
-                    'beneficiary_member_id': upline.id,
-                    'level_depth': rule.level_depth,
-                    'rule_id': rule.id,
-                    'base_amount': base_amount,
-                    'commission_pct': rule.commission_pct,
-                    'commission_amount': commission_amount,
-                    'currency_id': self.currency_id.id,
-                    'state': commission_state,
+                    'sale_order_id'         : self.id,
+                    'source_member_id'      : self.referral_member_id.id,
+                    'beneficiary_member_id' : upline.id,
+                    'level_depth'           : rule.level_depth,
+                    'rule_id'               : rule.id,
+                    'base_amount'           : base_amount,
+                    'commission_pct'        : rule.commission_pct,
+                    'commission_amount'     : commission_amount,
+                    'currency_id'           : self.currency_id.id,
+                    'state'                 : commission_state,
                 })
-                if auto_approved:
+                if commission_state == 'approved':
                     upline._compute_commission_balance()
 
             current_member = upline

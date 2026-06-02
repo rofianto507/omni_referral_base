@@ -13,6 +13,24 @@
                             <field name="referral_member_code_prefix"/>
                         </setting>
                     </block>
+
+                    <!-- Commission Settings -->
+                    <block title="Commission Settings">
+                        <setting string="Auto-Approve Commission for Active Upline"
+                                 help="Automatically approve commission for uplines who have confirmed Sales Orders within the active period.">
+                            <field name="referral_auto_approve_active_upline"/>
+                        </setting>
+                        <setting string="Skip Commission for Inactive Upline"
+                                 help="If enabled, commission is NOT created for inactive uplines (no confirmed SO within active period). If disabled, commission stays Pending for manual review."
+                                 attrs="{'invisible': [('referral_auto_approve_active_upline', '=', False)]}">
+                            <field name="referral_skip_inactive_upline"/>
+                        </setting>
+                        <setting string="Active Period (Days)"
+                                help="Number of days to look back when checking if an upline has been active. Default is 30 days."
+                                attrs="{'invisible': [('referral_auto_approve_active_upline', '=', False)]}">
+                            <field name="referral_active_upline_days"/>
+                        </setting>
+                    </block>
                 </app>
             </xpath>
         </field>
