@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- List -->
+    <!-- List View -->
     <record id="view_referral_commission_list" model="ir.ui.view">
         <field name="name">referral.commission.list</field>
         <field name="model">referral.commission</field>
@@ -12,8 +12,10 @@
                 <field name="beneficiary_member_id"/>
                 <field name="level_depth"/>
                 <field name="commission_pct" string="Rate (%)"/>
-                <field name="base_amount"/>
+                <field name="gross_profit_amount" string="Gross Profit"/>
+                <field name="profit_margin_percent" string="Margin %"/>
                 <field name="commission_amount"/>
+                <field name="net_profit_after_commission" string="Net Profit"/>
                 <field name="state" widget="badge"
                       decoration-warning="state == 'cancelled'"
                       decoration-muted="state == 'pending'"
@@ -23,7 +25,7 @@
         </field>
     </record>
 
-    <!-- Form -->
+    <!-- Form View -->
     <record id="view_referral_commission_form" model="ir.ui.view">
         <field name="name">referral.commission.form</field>
         <field name="model">referral.commission</field>
@@ -36,36 +38,66 @@
                     <button name="action_reject" string="Reject" type="object"
                             class="btn-danger"
                             invisible="state != 'pending'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,rejected"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,rejected,cancelled"/>
                 </header>
                 <sheet>
-                    <group>
+                    <!-- Section 1: Transaction & Member Info -->
+                    <group string="Transaction &amp; Member Information">
                         <group>
                             <field name="sale_order_id" readonly="1"/>
                             <field name="source_member_id" readonly="1"/>
                             <field name="beneficiary_member_id" readonly="1"/>
-                            <field name="beneficiary_partner_id" readonly="1"/>
                         </group>
                         <group>
-                            <field name="level_depth" readonly="1"/>
-                            <field name="rule_id" readonly="1"/>
-                            <field name="commission_pct" readonly="1"/>
-                            <field name="base_amount" readonly="1"/>
-                            <field name="commission_amount" readonly="1"/>
+                            <field name="beneficiary_partner_id" readonly="1"/>
                             <field name="currency_id" readonly="1"/>
                         </group>
                     </group>
+
+                    <!-- Section 2: Commission Rule & Calculation Base -->
+                    <group string="Commission Rule &amp; Base Amount">
+                        <group>
+                            <field name="level_depth" readonly="1" string="Referral Level"/>
+                            <field name="rule_id" readonly="1"/>
+                            <field name="commission_pct" readonly="1" string="Commission Rate (%)"/>
+                        </group>
+                        <group>
+                            <field name="base_amount" readonly="1" string="Total Transaction Amount"/>
+                            <field name="gross_profit_amount" readonly="1" string="Gross Profit (Calculation Base)"/>
+                        </group>
+                    </group>
+
+                    <!-- Section 3: Commission & Profit Analysis -->
+                    <group string="Commission &amp; Profit Analysis">
+                        <group>
+                            <field name="commission_amount" readonly="1" string="Commission Amount"/>
+                            <field name="profit_margin_percent" readonly="1" string="Profit Margin %"/>
+                        </group>
+                        <group>
+                            <field name="net_profit_after_commission" readonly="1" string="Net Profit After Commission"/>
+                        </group>
+                    </group>
+
+                    <!-- Info Box: Quick Summary -->
+                    <div class="alert alert-info" role="alert">
+                        <strong>Commission Summary:</strong><br/>
+                        • Gross Profit: <field name="gross_profit_amount" readonly="1" class="oe_inline"/> 
+                        (<field name="profit_margin_percent" readonly="1" class="oe_inline"/> % margin)<br/>
+                        • Commission (<field name="commission_pct" readonly="1" class="oe_inline"/>%): 
+                        <field name="commission_amount" readonly="1" class="oe_inline"/><br/>
+                        • Net Profit After Commission: <field name="net_profit_after_commission" readonly="1" class="oe_inline"/>
+                    </div>
                 </sheet>
-                    <chatter>
-                        <field name="message_follower_ids"/>
-                        <field name="activity_ids"/>
-                        <field name="message_ids"/>
-                    </chatter>
+                <chatter>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </chatter>
             </form>
         </field>
     </record>
 
-    <!-- Search -->
+    <!-- Search View -->
     <record id="view_referral_commission_search" model="ir.ui.view">
         <field name="name">referral.commission.search</field>
         <field name="model">referral.commission</field>
@@ -75,14 +107,21 @@
                 <field name="source_member_id"/>
                 <field name="beneficiary_member_id"/>
                 <field name="state"/>
+                <field name="profit_margin_percent"/>
                 <filter string="Pending" name="filter_pending" domain="[('state','=','pending')]"/>
                 <filter string="Approved" name="filter_approved" domain="[('state','=','approved')]"/>
-                <filter string="Paid" name="filter_paid" domain="[('state','=','paid')]"/>
+                <filter string="Rejected" name="filter_rejected" domain="[('state','=','rejected')]"/>
                 <filter string="Cancelled" name="filter_cancelled" domain="[('state','=','cancelled')]"/>
+                <separator/>
+                <filter string="High Margin (>30%)" name="filter_high_margin" domain="[('profit_margin_percent', '&gt;', 30)]"/>
+                <filter string="Medium Margin (15-30%)" name="filter_medium_margin" domain="[('profit_margin_percent', '&gt;=', 15), ('profit_margin_percent', '&lt;=', 30)]"/>
+                <filter string="Low Margin (&lt;15%)" name="filter_low_margin" domain="[('profit_margin_percent', '&lt;', 15)]"/>
+                <separator/>
                 <group>
                     <filter string="State" name="group_state" context="{'group_by':'state'}"/>
                     <filter string="Beneficiary" name="group_beneficiary" context="{'group_by':'beneficiary_member_id'}"/>
                     <filter string="Level" name="group_level" context="{'group_by':'level_depth'}"/>
+                    <filter string="Profit Margin" name="group_margin" context="{'group_by':'profit_margin_percent'}"/>
                 </group>
             </search>
         </field>
@@ -97,5 +136,4 @@
         <field name="context">{'create': False}</field>
     </record>
 
-   
 </odoo>

@@ -25,6 +25,12 @@ class SaleOrder(models.Model):
         string='Commission Count',
         compute='_compute_referral_commission_count',
     )
+    total_gross_profit = fields.Monetary(
+        string='Total Gross Profit',
+        compute='_compute_total_gross_profit',
+        store=True,
+        help='Sum of (Unit Price - Cost Price) × Quantity for all line items',
+    )
 
     @api.depends('partner_id')
     def _compute_referral_member_id(self):
@@ -37,6 +43,22 @@ class SaleOrder(models.Model):
     def _compute_referral_commission_count(self):
         for rec in self:
             rec.referral_commission_count = len(rec.referral_commission_ids)
+
+    @api.depends('order_line.product_id.standard_price', 'order_line.price_unit', 'order_line.product_uom_qty')
+    def _compute_total_gross_profit(self):
+        """
+        Calculate total gross profit from all sale order lines.
+        Gross Profit per line = (Unit Price - Cost Price) × Quantity
+        """
+        for order in self:
+            total_gross_profit = 0.0
+            for line in order.order_line:
+                if line.product_id:
+                    cost_price = line.product_id.standard_price
+                    gross_profit_line = (line.price_unit - cost_price) * line.product_uom_qty
+                    total_gross_profit += gross_profit_line
+            
+            order.total_gross_profit = total_gross_profit
 
     def _get_referral_config(self):
         ICP = self.env['ir.config_parameter'].sudo()
@@ -73,10 +95,19 @@ class SaleOrder(models.Model):
         return res
     
     def _generate_referral_commissions(self):
+        """
+        Generate referral commissions based on gross profit (new calculation method).
+        
+        Flow:
+        1. Calculate total gross profit from all sale order lines
+        2. Distribute commissions to upline chain based on commission rules
+        3. Apply auto-approval logic based on upline activity
+        """
         self.ensure_one()
         if not self.referral_member_id:
             return
 
+        # Delete pending commissions to regenerate
         self.referral_commission_ids.filtered(
             lambda x: x.state == 'pending'
         ).unlink()
@@ -85,13 +116,15 @@ class SaleOrder(models.Model):
         if not rules:
             return
 
-        base_amount = self.amount_untaxed
-        if base_amount <= 0:
+        # Calculate total gross profit from all lines
+        gross_profit_amount = self.total_gross_profit
+        if gross_profit_amount <= 0:
             return
 
-        # Baca config sekali saja
+        # Get referral config once
         cfg = self._get_referral_config()
 
+        # Traverse upline chain and create commissions
         current_member = self.referral_member_id
         for rule in rules:
             upline = current_member.sponsor_id
@@ -102,21 +135,23 @@ class SaleOrder(models.Model):
                 current_member = upline
                 continue
 
-            # Cek aktivitas upline jika fitur aktif
+            # Check upline activity if auto_approve is enabled
             if cfg['auto_approve']:
                 upline_active = self._is_upline_active_seller(upline, cfg['active_days'])
 
-                # Skip: tidak buat record komisi sama sekali
+                # Skip: don't create commission record at all
                 if not upline_active and cfg['skip_inactive']:
                     current_member = upline
                     continue
 
                 commission_state = 'approved' if upline_active else 'pending'
             else:
-                # Fitur mati → semua pending seperti biasa
+                # Feature disabled → all pending as usual
                 commission_state = 'pending'
 
-            commission_amount = base_amount * rule.commission_pct / 100.0
+            # Calculate commission from GROSS PROFIT (not transaction total)
+            commission_amount = gross_profit_amount * rule.commission_pct / 100.0
+            
             if commission_amount > 0:
                 self.env['referral.commission'].create({
                     'sale_order_id'         : self.id,
@@ -124,7 +159,8 @@ class SaleOrder(models.Model):
                     'beneficiary_member_id' : upline.id,
                     'level_depth'           : rule.level_depth,
                     'rule_id'               : rule.id,
-                    'base_amount'           : base_amount,
+                    'base_amount'           : self.amount_untaxed,  # Keep for reference
+                    'gross_profit_amount'   : gross_profit_amount,   # NEW: Actual calculation base
                     'commission_pct'        : rule.commission_pct,
                     'commission_amount'     : commission_amount,
                     'currency_id'           : self.currency_id.id,
