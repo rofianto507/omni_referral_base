@@ -1,6 +1,6 @@
 {
     'name': 'Omni Referral Base',
-    'version': '19.0.1.0.0',
+    'version': '19.0.2.0.0',
     'summary': 'Multi-Level Referral Network & Sales Commission for Odoo 19',
     'description': """
         Omni Referral Base is a complete multi-level referral network and 
@@ -57,6 +57,7 @@
         ],
     },
     'images': ['static/description/banner.png'],
+    'icon': 'static/description/icon.png',
     'installable': True,
     'application': True, 
     'auto_install': False,

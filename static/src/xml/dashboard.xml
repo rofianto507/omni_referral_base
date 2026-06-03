@@ -51,7 +51,7 @@
                         </div>
                         <div class="o_kpi_body">
                             <div class="o_kpi_label">Active Members</div>
-                            <div class="o_kpi_value"  >
+                            <div class="o_kpi_value">
                                 <t t-esc="formatNumber(state.data.kpi.active_members)"/>
                             </div>
                             <div class="o_kpi_sub">All time</div>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="o_kpi_body">
                             <div class="o_kpi_label">Commission Approved</div>
-                            <div class="o_kpi_value" >
+                            <div class="o_kpi_value">
                                 <t t-esc="formatCurrency(state.data.kpi.total_commission)"/>
                             </div>
                             <div class="o_kpi_sub" t-esc="periodLabel"/>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="o_kpi_body">
                             <div class="o_kpi_label">Withdrawal Paid</div>
-                            <div class="o_kpi_value" >
+                            <div class="o_kpi_value">
                                 <t t-esc="formatCurrency(state.data.kpi.total_withdrawal)"/>
                             </div>
                             <div class="o_kpi_sub" t-esc="periodLabel"/>
@@ -108,7 +108,8 @@
                         <div t-ref="chartMember" class="o_chart_canvas"/>
                     </div>
                 </div>
-                 <!-- ── Bottom Section ── -->
+
+                <!-- ── Bottom Section ── -->
                 <div class="o_dashboard_bottom_grid">
 
                     <!-- Top 5 Members -->
@@ -127,7 +128,6 @@
                         <t t-else="">
                             <div class="o_top_members_list">
                                 <t t-foreach="state.data.top_members" t-as="m" t-key="m.id">
-                                
                                     <div class="o_top_member_row"
                                         t-att-data-member-id="m.id"
                                         t-on-click="onClickMember">
@@ -154,20 +154,20 @@
                         </t>
                     </div>
 
-                    <!-- Pending Commissions -->
+                    <!-- Pending Withdrawals -->
                     <div class="o_dashboard_card">
                         <div class="o_card_header">
-                            <i class="fa fa-clock-o me-2" style="color:#71639e;"/>
-                            <span class="fw-semibold">Pending Commissions</span>
+                            <i class="fa fa-hourglass me-2" style="color:#71639e;"/>
+                            <span class="fw-semibold">Pending Withdrawals</span>
                             <span class="ms-auto">
                                 <span class="badge rounded-pill bg-warning text-dark" style="font-size:10px;"
-                                      t-esc="state.data.pending_commissions.length + ' pending'"/>
+                                      t-esc="state.data.pending_withdrawals.length + ' pending'"/>
                             </span>
                         </div>
-                        <t t-if="state.data.pending_commissions.length == 0">
+                        <t t-if="state.data.pending_withdrawals.length == 0">
                             <div class="o_empty_state">
                                 <i class="fa fa-check-circle fa-2x text-success mb-2"/>
-                                <div class="text-muted">All commissions are up to date!</div>
+                                <div class="text-muted">No pending withdrawals</div>
                             </div>
                         </t>
                         <t t-else="">
@@ -176,46 +176,43 @@
                                     <thead>
                                         <tr>
                                             <th>Member</th>
-                                            <th>Sales Order</th>
-                                            <th>Lvl</th>
                                             <th>Amount</th>
-                                            <th>Date</th>
+                                            <th>Balance After</th>
+                                            <th>Request Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <t t-foreach="state.data.pending_commissions" t-as="c" t-key="c.id">
+                                        <t t-foreach="state.data.pending_withdrawals" t-as="w" t-key="w.id">
                                             <tr>
                                                 <td>
-                                                    <div class="fw-semibold" style="font-size:12px;" t-esc="c.beneficiary"/>
-                                                    <div class="text-muted" style="font-size:10px;font-family:monospace;" t-esc="c.beneficiary_code"/>
-                                                </td>
-                                                <td style="font-size:12px;" t-esc="c.sale_order"/>
-                                                <td>
-                                                    <span class="badge rounded-pill bg-light text-dark border" style="font-size:10px;">
-                                                        L<t t-esc="c.level_depth"/>
-                                                    </span>
+                                                    <div class="fw-semibold" style="font-size:12px;" t-esc="w.member"/>
+                                                    <div class="text-muted" style="font-size:10px;font-family:monospace;" t-esc="w.member_code"/>
                                                 </td>
                                                 <td class="fw-semibold" style="font-size:12px;color:#059669;"
-                                                    t-esc="formatCurrency(c.commission_amount)"/>
-                                                <td class="text-muted" style="font-size:11px;" t-esc="c.create_date"/>
+                                                    t-esc="formatCurrency(w.amount)"/>
+                                                <td class="text-muted" style="font-size:11px;"
+                                                    t-esc="formatCurrency(w.commission_balance_after)"/>
+                                                <td class="text-muted" style="font-size:11px;" t-esc="w.date_request"/>
                                                 <td>
                                                     <div class="d-flex gap-1">
                                                         <!-- Approve button -->
                                                         <button class="btn btn-xs btn-success"
-                                                                t-att-data-commission-id="c.id"
-                                                                t-att-data-member-name="c.beneficiary"
-                                                                t-att-data-amount="formatCurrency(c.commission_amount)"
-                                                                t-on-click="onClickApprove">
+                                                                t-att-data-withdrawal-id="w.id"
+                                                                t-att-data-member-name="w.member"
+                                                                t-att-data-amount="formatCurrency(w.amount)"
+                                                                t-on-click="onClickApprove"
+                                                                title="Approve Withdrawal">
                                                             <i class="fa fa-check"/>
                                                         </button>
 
                                                         <!-- Reject button -->
                                                         <button class="btn btn-xs btn-danger"
-                                                                t-att-data-commission-id="c.id"
-                                                                t-att-data-member-name="c.beneficiary"
-                                                                t-att-data-amount="formatCurrency(c.commission_amount)"
-                                                                t-on-click="onClickReject">
+                                                                t-att-data-withdrawal-id="w.id"
+                                                                t-att-data-member-name="w.member"
+                                                                t-att-data-amount="formatCurrency(w.amount)"
+                                                                t-on-click="onClickReject"
+                                                                title="Reject Withdrawal">
                                                             <i class="fa fa-times"/>
                                                         </button>
                                                     </div>

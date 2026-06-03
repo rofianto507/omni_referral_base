@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { Component, useState, onWillStart, onMounted, onPatched,onWillUnmount, useRef } from "@odoo/owl";
+import { Component, useState, onWillStart, onMounted, onPatched, onWillUnmount, useRef } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 class ReferralDashboard extends Component {
@@ -36,10 +36,11 @@ class ReferralDashboard extends Component {
 
         onPatched(() => {
             this._renderCharts();
-            if(!this._resizeObserver) {
+            if (!this._resizeObserver) {
                 this._initResizeObserver();
             }
         });
+
         onWillUnmount(() => {
             if (this._resizeObserver) {
                 this._resizeObserver.disconnect();
@@ -55,7 +56,8 @@ class ReferralDashboard extends Component {
             }
         });
     }
-     _initResizeObserver() {
+
+    _initResizeObserver() {
         const container = this.chartCommissionRef.el?.closest(".o_referral_dashboard");
         if (!container || !window.ResizeObserver) return;
 
@@ -229,17 +231,17 @@ class ReferralDashboard extends Component {
     }
 
     onClickApprove(ev) {
-        const id = parseInt(ev.currentTarget.dataset.commissionId);
+        const id = parseInt(ev.currentTarget.dataset.withdrawalId);
         const member = ev.currentTarget.dataset.memberName || "";
         const amount = ev.currentTarget.dataset.amount || "";
         if (!id) return;
         this.dialogService.add(ConfirmationDialog, {
-            title: "Approve Commission",
-            body: `Approve commission ${amount} for ${member}? This action cannot be undone.`,
+            title: "Approve Withdrawal",
+            body: `Approve withdrawal ${amount} for ${member}? This action cannot be undone.`,
             confirmLabel: "Approve",
             cancelLabel: "Cancel",
             confirm: async () => {
-                await this.orm.call("referral.dashboard", "action_approve_commission", [id]);
+                await this.orm.call("referral.dashboard", "action_approve_withdrawal", [id]);
                 await this.loadData();
             },
             cancel: () => {},
@@ -247,18 +249,18 @@ class ReferralDashboard extends Component {
     }
 
     onClickReject(ev) {
-        const id = parseInt(ev.currentTarget.dataset.commissionId);
+        const id = parseInt(ev.currentTarget.dataset.withdrawalId);
         const member = ev.currentTarget.dataset.memberName || "";
         const amount = ev.currentTarget.dataset.amount || "";
         if (!id) return;
         this.dialogService.add(ConfirmationDialog, {
-            title: "Reject Commission",
-            body: `Reject commission ${amount} for ${member}? This action cannot be undone.`,
+            title: "Reject Withdrawal",
+            body: `Reject withdrawal ${amount} for ${member}? This action cannot be undone.`,
             confirmLabel: "Reject",
             cancelLabel: "Cancel",
             confirmClass: "btn-danger",
             confirm: async () => {
-                await this.orm.call("referral.dashboard", "action_reject_commission", [id]);
+                await this.orm.call("referral.dashboard", "action_reject_withdrawal", [id]);
                 await this.loadData();
             },
             cancel: () => {},
