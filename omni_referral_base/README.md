@@ -47,25 +47,30 @@ The module ensures business profitability by calculating commissions from actual
 ### Problem with Transaction-Based Commission
 
 Traditional MLM/referral systems calculate commissions as a percentage of total transaction amount, which can be problematic:
+
+```
 Commission = Transaction Total × Commission %
 
 Example - Problem:
-
-Premium Product: Rp 100K (Margin 40%) → Commission 5% = Rp 5K (Profit: Rp 35K) ✅
-Economy Product: Rp 100K (Margin 5%) → Commission 5% = Rp 5K (Profit: Rp 0K) ❌ BREAK-EVEN!
+- Premium Product: Rp 100K (Margin 40%) → Commission 5% = Rp 5K (Profit: Rp 35K) ✅
+- Economy Product: Rp 100K (Margin 5%) → Commission 5% = Rp 5K (Profit: Rp 0K) ❌ BREAK-EVEN!
+```
 
 This approach doesn't account for different product margins and can result in unprofitable sales.
 
 ### Solution: Gross Profit-Based Commission
 
 Calculate commissions from actual profit earned on each sale:
-Commission = Gross Profit × Commission % Gross Profit = Unit Price - Cost Price
+
+```
+Commission = Gross Profit × Commission %
+Gross Profit = Unit Price - Cost Price
 
 Example - Solution:
-
-Premium Product: Profit Rp 40K → Commission 15% = Rp 6K (Net: Rp 34K) ✅
-Standard Product: Profit Rp 15K → Commission 15% = Rp 2.25K (Net: Rp 12.75K) ✅
-Economy Product: Profit Rp 5K → Commission 15% = Rp 750 (Net: Rp 4.25K) ✅
+- Premium Product: Profit Rp 40K → Commission 15% = Rp 6K (Net: Rp 34K) ✅
+- Standard Product: Profit Rp 15K → Commission 15% = Rp 2.25K (Net: Rp 12.75K) ✅
+- Economy Product: Profit Rp 5K → Commission 15% = Rp 750 (Net: Rp 4.25K) ✅
+```
 
 **Result:** Every sale remains profitable, regardless of product margin.
 
@@ -85,9 +90,22 @@ Economy Product: Profit Rp 5K → Commission 15% = Rp 750 (Net: Rp 4.25K) ✅
 ### Commission Distribution (Level 1: 15%, Level 2: 8%)
 
 **Level 1 Commission (Direct Sponsor):**
-Gross Profit Amount = Rp 60K Commission Rate = 15% Commission = Rp 60K × 15% = Rp 9K Net Profit After Commission = Rp 60K - Rp 9K = Rp 51K Profit Margin % = (Rp 60K / Rp 300K) × 100 = 20%
+```
+Gross Profit Amount = Rp 60K
+Commission Rate = 15%
+Commission = Rp 60K × 15% = Rp 9K
+Net Profit After Commission = Rp 60K - Rp 9K = Rp 51K
+Profit Margin % = (Rp 60K / Rp 300K) × 100 = 20%
+```
+
 **Level 2 Commission (Sponsor's Sponsor):**
-Gross Profit Amount = Rp 60K Commission Rate = 8% Commission = Rp 60K × 8% = Rp 4.8K Net Profit After Commission = Rp 60K - Rp 4.8K = Rp 55.2K Profit Margin % = (Rp 60K / Rp 300K) × 100 = 20%
+```
+Gross Profit Amount = Rp 60K
+Commission Rate = 8%
+Commission = Rp 60K × 8% = Rp 4.8K
+Net Profit After Commission = Rp 60K - Rp 4.8K = Rp 55.2K
+Profit Margin % = (Rp 60K / Rp 300K) × 100 = 20%
+```
 
 **Key Insights:**
 - ✅ All uplines get appropriate commissions
@@ -127,11 +145,12 @@ Gross Profit Amount = Rp 60K Commission Rate = 8% Commission = Rp 60K × 8% = Rp
 - **Important:** Accurate cost pricing is crucial for gross profit calculation
 
 **Example:**
+```
 Product: Laptop Pro
-
-Selling Price: Rp 10.000.000
-Cost Price: Rp 6.000.000 (60% COGS)
-Gross Profit: Rp 4.000.000 (40% margin)
+- Selling Price: Rp 10.000.000
+- Cost Price: Rp 6.000.000 (60% COGS)
+- Gross Profit: Rp 4.000.000 (40% margin)
+```
 
 #### B. Set Up Commission Rules
 - Go to **Referral > Configuration > Commission Rules**
@@ -157,58 +176,62 @@ Gross Profit: Rp 4.000.000 (40% margin)
 ---
 
 ## Module Structure
+
 ```
-omni_referral_base/ 
-├── data/ 
-│ ├── sequence.xml # Auto-numbering for members 
-│ └── demo.xml # Demo data 
-├── models/ 
-│ ├── init.py 
-│ ├── sale_order.py # [UPDATED] Enhanced with gross profit calculation 
-│ ├── commission.py # [UPDATED] Commission records with profit tracking 
-│ ├── commission_rule.py # Commission rules definition 
-│ ├── commission_withdraw.py # Withdrawal workflow 
-│ ├── member.py # Referral member management 
-│ ├── dashboard.py # Dashboard analytics 
-│ └── res_config_settings.py # Configuration 
+omni_referral_base/
+├── data/
+│   ├── sequence.xml              # Auto-numbering for members
+│   └── demo.xml                  # Demo data
+├── models/
+│   ├── __init__.py
+│   ├── sale_order.py             # [UPDATED] Enhanced with gross profit calculation
+│   ├── commission.py             # [UPDATED] Commission records with profit tracking
+│   ├── commission_rule.py        # Commission rules definition
+│   ├── commission_withdraw.py    # Withdrawal workflow
+│   ├── member.py                 # Referral member management
+│   ├── dashboard.py              # Dashboard analytics
+│   └── res_config_settings.py    # Configuration
 ├── views/
-│ ├── commission_views.xml # [UPDATED] Commission list/form/search 
-│ ├── commission_rule_views.xml # Rules configuration 
-│ ├── commission_withdraw_views.xml 
-│ ├── member_views.xml # Member management 
-│ ├── sale_order_views.xml # SO integration 
-│ ├── dashboard_views.xml # Dashboard 
-│ ├── referral_tree_views.xml # Network tree 
-│ ├── res_config_settings_views.xml 
-│ ├── res_partner_views.xml 
-│ └── menu.xml # Menu structure 
-├── reports/ 
-│ └── member_card_report.xml # Member card printable report 
-├── security/ 
-│ ├── security.xml # Record rules 
-│ └── ir.model.access.csv # Model permissions 
-├── static/ 
-│ ├── description/ 
-│ │ ├── banner.png # Module banner 
-│ │ ├── icon.png # Module icon 
-│ │ └── index.html # Module description 
-│ ├── lib/ 
-│ │ └── echarts.min.js # Chart library 
-│ └── src/ 
-│ ├── css/ 
-│ │ ├── dashboard.css 
-│ │ └── referral_tree.css 
-│ ├── js/ 
-│ │ ├── dashboard.js 
-│ │ └── referral_tree_widget.js 
-│ └── xml/ 
-│ ├── dashboard.xml 
-│ └── referral_tree_widget.xml 
-├── wizard/ 
-│ └── withdraw_wizard_views.xml # Withdrawal wizard 
-├── manifest.py # Module metadata 
-├── init.py └── README.md
+│   ├── commission_views.xml      # [UPDATED] Commission list/form/search
+│   ├── commission_rule_views.xml # Rules configuration
+│   ├── commission_withdraw_views.xml
+│   ├── member_views.xml          # Member management
+│   ├── sale_order_views.xml      # SO integration
+│   ├── dashboard_views.xml       # Dashboard
+│   ├── referral_tree_views.xml   # Network tree
+│   ├── res_config_settings_views.xml
+│   ├── res_partner_views.xml
+│   └── menu.xml                  # Menu structure
+├── reports/
+│   └── member_card_report.xml    # Member card printable report
+├── security/
+│   ├── security.xml              # Record rules
+│   └── ir.model.access.csv       # Model permissions
+├── static/
+│   ├── description/
+│   │   ├── banner.png            # Module banner
+│   │   ├── icon.png              # Module icon
+│   │   └── index.html            # Module description
+│   ├── lib/
+│   │   └── echarts.min.js        # Chart library
+│   └── src/
+│       ├── css/
+│       │   ├── dashboard.css
+│       │   └── referral_tree.css
+│       ├── js/
+│       │   ├── dashboard.js
+│       │   └── referral_tree_widget.js
+│       └── xml/
+│           ├── dashboard.xml
+│           └── referral_tree_widget.xml
+├── wizard/
+│   └── withdraw_wizard_views.xml # Withdrawal wizard
+├── __manifest__.py               # Module metadata
+├── __init__.py
+└── README.md
 ```
+
+---
 
 ## Database Models
 
