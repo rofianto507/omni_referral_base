@@ -10,7 +10,7 @@ class ReferralDashboard(models.AbstractModel):
 
     def _local_date_to_utc_range(self, d_from, d_to):
         """
-       Convert local date range (d_from, d_to) to UTC datetime range for querying create_date fields.
+        Convert local date range (d_from, d_to) to UTC datetime range for querying create_date fields.
         d_from : date — start (00:00:00 local)
         d_to   : date — end (23:59:59 local)
         Return : (datetime_utc_start, datetime_utc_end)
@@ -109,7 +109,8 @@ class ReferralDashboard(models.AbstractModel):
             ])
             chart_member_labels.append(label)
             chart_member_values.append(count)
-         # ── Top 5 Members by commission_balance ──────────────
+
+        # ── Top 5 Members by commission_balance ──────────────
         top_members_rec = Member.search(
             [('state', '=', 'active'), ('commission_balance', '>', 0)],
             order='commission_balance desc',
@@ -127,25 +128,25 @@ class ReferralDashboard(models.AbstractModel):
                 'state': m.state,
             })
 
-        # ── Recent Pending Commissions (10 newest) ───────────
-        pending_commissions = Commission.search(
-            [('state', '=', 'pending')],
+        # ── Pending Withdrawals (state='submitted') - 10 newest ──────────────────
+        pending_withdrawals = Withdraw.search(
+            [('state', '=', 'submitted')],
             order='create_date desc',
             limit=10,
         )
-        pending_list = []
-        for c in pending_commissions:
-            pending_list.append({
-                'id': c.id,
-                'beneficiary': c.beneficiary_member_id.partner_id.name or '-',
-                'beneficiary_code': c.beneficiary_member_id.member_code or '-',
-                'source_member': c.source_member_id.partner_id.name or '-',
-                'sale_order': c.sale_order_id.name or '-',
-                'level_depth': c.level_depth,
-                'commission_pct': c.commission_pct,
-                'commission_amount': c.commission_amount,
-                'create_date': c.create_date.strftime('%d %b %Y') if c.create_date else '-',
+        pending_withdraw_list = []
+        for w in pending_withdrawals:
+            pending_withdraw_list.append({
+                'id': w.id,
+                'member': w.member_id.partner_id.name or '-',
+                'member_code': w.member_id.member_code or '-',
+                'amount': w.amount,
+                'commission_balance_before': w.commission_balance_before,
+                'commission_balance_after': w.commission_balance_after,
+                'state': w.state,
+                'date_request': w.date_request.strftime('%d %b %Y') if w.date_request else '-',
             })
+
         return {
             'period': period,
             'date_from': str(date_from),
@@ -167,16 +168,17 @@ class ReferralDashboard(models.AbstractModel):
                 'values': chart_member_values,
             },
             'top_members': top_members,
-            'pending_commissions': pending_list,
+            'pending_withdrawals': pending_withdraw_list,
         }
+
     @api.model
-    def action_approve_commission(self, commission_id):
-        commission = self.env['referral.commission'].browse(commission_id)
-        commission.action_approve()
+    def action_approve_withdrawal(self, withdrawal_id):
+        withdrawal = self.env['commission.withdraw'].browse(withdrawal_id)
+        withdrawal.action_approve()
         return True
 
     @api.model
-    def action_reject_commission(self, commission_id):
-        commission = self.env['referral.commission'].browse(commission_id)
-        commission.action_reject()
+    def action_reject_withdrawal(self, withdrawal_id):
+        withdrawal = self.env['commission.withdraw'].browse(withdrawal_id)
+        withdrawal.action_reject()
         return True

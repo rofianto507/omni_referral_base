@@ -36,10 +36,10 @@
         <div class="oe_span6">
             <div style="padding:20px;text-align:center;">
                 <span class="fa fa-bolt fa-3x" style="color:#71639e;"/>
-                <h4 style="margin-top:12px;">Auto Commission Calculation</h4>
+                <h4 style="margin-top:12px;">Gross Profit-Based Commission Calculation</h4>
                 <p style="color:#6b7280;">
-                    Commissions are automatically calculated and distributed across the entire
-                    upline chain the moment a Sales Order is confirmed.
+                    Commissions calculated from actual gross profit (Unit Price - Cost Price) instead of total transaction amount.
+                    Protects business margin and ensures profitability on every sale.
                 </p>
             </div>
         </div>
@@ -48,7 +48,7 @@
                 <span class="fa fa-sitemap fa-3x" style="color:#71639e;"/>
                 <h4 style="margin-top:12px;">Multi-Level Commission Rules</h4>
                 <p style="color:#6b7280;">
-                    Define commission percentages per referral depth level.
+                    Define commission percentages per referral depth level based on gross profit.
                     Unlimited levels with unique percentage per level.
                 </p>
             </div>
@@ -72,7 +72,7 @@
                 <h4 style="margin-top:12px;">Interactive Dashboard</h4>
                 <p style="color:#6b7280;">
                     Real-time KPI cards, commission trend &amp; member growth charts,
-                    top members leaderboard, and one-click pending commission approval.
+                    top members leaderboard, and one-click pending withdrawal approval.
                 </p>
             </div>
         </div>
@@ -104,12 +104,11 @@
     <div class="oe_row oe_spaced">
         <div class="oe_span6">
             <div style="padding:20px;text-align:center;">
-                <span class="fa fa-sliders fa-3x" style="color:#71639e;"/>
-                <h4 style="margin-top:12px;">Configurable Commission Behavior</h4>
+                <span class="fa fa-percent fa-3x" style="color:#71639e;"/>
+                <h4 style="margin-top:12px;">Profit Margin Tracking</h4>
                 <p style="color:#6b7280;">
-                    Control how commissions are handled for inactive uplines — auto-approve
-                    active uplines, skip inactive ones entirely, or keep them pending for
-                    manual review. Active period configurable in days (e.g. 7, 30, 90 days).
+                    Track and monitor profit margin percentage for each transaction.
+                    Identify high-margin and low-margin sales for business analytics.
                 </p>
             </div>
         </div>
@@ -145,6 +144,86 @@
                     No third-party service required — fully self-hosted.
                 </p>
             </div>
+        </div>
+    </div>
+
+    <div class="oe_separator"/>
+
+    <!-- ── Gross Profit Commission Explanation ── -->
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12" style="text-align:center;">
+            <h2 style="color:#71639e;">💡 Gross Profit-Based Commission Calculation</h2>
+        </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12" style="background-color:#f3f4f6;padding:20px;border-radius:8px;">
+            <h4 style="color:#1f2937;margin-bottom:12px;">Why Gross Profit?</h4>
+            <p style="color:#4b5563;margin:0 0 12px 0;">
+                Traditional commission systems calculate commissions from total transaction amount, which can be problematic 
+                when products have different profit margins. This can lead to unprofitable situations where the commission 
+                paid out exceeds the actual profit earned on a sale.
+            </p>
+            <p style="color:#4b5563;margin:0;">
+                <strong>Omni Referral Base solves this</strong> by calculating commissions from gross profit (Unit Price - Cost Price), 
+                ensuring that business profitability is always protected.
+            </p>
+        </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12" style="text-align:center;margin-top:20px;">
+            <h4 style="color:#1f2937;">Commission Calculation Example</h4>
+        </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12">
+            <table class="table table-bordered" style="font-size:13px;">
+                <thead style="background-color:#71639e;color:white;">
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Unit Price</th>
+                        <th>Cost Price</th>
+                        <th>Gross Profit</th>
+                        <th>Profit Margin %</th>
+                        <th>Commission (15%)</th>
+                        <th>Net Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color:#f0f4ff;">
+                        <td><strong>Premium Product</strong></td>
+                        <td>Rp 100.000</td>
+                        <td>Rp 60.000</td>
+                        <td style="color:#059669;"><strong>Rp 40.000</strong></td>
+                        <td style="color:#059669;"><strong>40%</strong></td>
+                        <td style="color:#dc2626;">Rp 6.000</td>
+                        <td style="color:#059669;"><strong>Rp 34.000</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Standard Product</strong></td>
+                        <td>Rp 100.000</td>
+                        <td>Rp 85.000</td>
+                        <td style="color:#059669;"><strong>Rp 15.000</strong></td>
+                        <td style="color:#059669;"><strong>15%</strong></td>
+                        <td style="color:#dc2626;">Rp 2.250</td>
+                        <td style="color:#059669;"><strong>Rp 12.750</strong></td>
+                    </tr>
+                    <tr style="background-color:#f0f4ff;">
+                        <td><strong>Economy Product</strong></td>
+                        <td>Rp 100.000</td>
+                        <td>Rp 95.000</td>
+                        <td style="color:#059669;"><strong>Rp 5.000</strong></td>
+                        <td style="color:#059669;"><strong>5%</strong></td>
+                        <td style="color:#dc2626;">Rp 750</td>
+                        <td style="color:#059669;"><strong>Rp 4.250</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size:12px;color:#6b7280;margin-top:12px;">
+                ✅ <strong>Result:</strong> All products remain profitable after commission payout, regardless of margin differences.
+            </p>
         </div>
     </div>
 
@@ -190,7 +269,7 @@
         </div>
         <div class="oe_span6">
             <p style="text-align:center;font-weight:600;color:#4b5563;margin-bottom:8px;">
-                Commission List
+                Commission List with Profit Analysis
             </p>
             <img src="screenshot_commission.png"
                  style="display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e5e7eb;"
@@ -229,11 +308,13 @@
         <div class="oe_span12">
             <ol style="font-size:14px;line-height:2.2;max-width:700px;margin:0 auto;">
                 <li><b>Configure Settings</b> — Set member code prefix, commission auto-approval rules, and active period in days</li>
-                <li><b>Set up Commission Rules</b> — Define percentage per level (Level 1 = 5%, Level 2 = 3%, etc.)</li>
+                <li><b>Set up Commission Rules</b> — Define commission percentage per level based on gross profit (e.g., Level 1 = 15%, Level 2 = 8%)</li>
+                <li><b>Set Product Cost Prices</b> — Ensure each product has accurate cost price (standard_price) to calculate gross profit correctly</li>
                 <li><b>Register Members</b> — Create referral members linked to existing Odoo contacts</li>
                 <li><b>Assign Sponsor</b> — Connect each member to their upline to build the network</li>
-                <li><b>Sales Order Confirmed</b> — Commissions automatically generated; active uplines get auto-approved, inactive uplines get pending or skipped based on settings</li>
-                <li><b>Approve Commissions</b> — Manager approves or rejects pending commissions from dashboard or commission list</li>
+                <li><b>Sales Order Confirmed</b> — System calculates gross profit from all line items, then distributes commissions across upline chain based on profit (not transaction total)</li>
+                <li><b>Commission Analysis</b> — View profit margin %, net profit after commission, and other metrics for each commission record</li>
+                <li><b>Approve Commissions</b> — Manager approves or rejects pending commissions from dashboard or commission list (filters by margin profile available)</li>
                 <li><b>Process Withdrawals</b> — Members submit withdrawal requests, manager reviews and pays</li>
                 <li><b>Sales Order Cancelled</b> — All pending commissions automatically cancelled</li>
             </ol>
@@ -252,6 +333,8 @@
         <div class="oe_span6">
             <ul style="font-size:14px;line-height:2.2;list-style:none;padding:0;">
                 <li>✅ Full module source code (OPL-1)</li>
+                <li>✅ Gross profit-based commission calculation</li>
+                <li>✅ Profit margin tracking &amp; analytics</li>
                 <li>✅ Lifetime access to purchased version</li>
                 <li>✅ Demo data included</li>
                 <li>✅ Compatible with Odoo 19 Community &amp; Enterprise</li>
@@ -261,8 +344,8 @@
             <ul style="font-size:14px;line-height:2.2;list-style:none;padding:0;">
                 <li>✅ Email support via support@selstudio.id</li>
                 <li>✅ Bug fix updates included</li>
+                <li>✅ Advanced commission filtering &amp; reporting</li>
                 <li>⬜ Member Portal <span style="color:#9ca3af;font-size:12px;">(coming in next version)</span></li>
-                 
             </ul>
         </div>
     </div>
@@ -290,8 +373,45 @@
                 <tr><th>Models</th><td>referral.member, referral.commission,<br/>commission.rule, commission.withdraw</td></tr>
                 <tr><th>Views</th><td>List, Form, Kanban, Dashboard, Tree Widget</td></tr>
                 <tr><th>Reports</th><td>Member Card (HTML/PDF)</td></tr>
-                <tr><th>Author</th><td>Sel Studio</td></tr>
-                <tr><th>Support</th><td>support@selstudio.id</td></tr>
+                <tr><th>Commission Calculation</th><td>Based on Gross Profit (Unit Price - Cost Price)</td></tr>
+                <tr><th>Profit Tracking</th><td>Margin %, Net Profit After Commission</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12" style="text-align:center;">
+            <h3 style="color:#71639e;">New Computed Fields (v19.0.2.0.0+)</h3>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12">
+            <table class="table table-bordered" style="font-size:12px;">
+                <tr>
+                    <th>Field</th>
+                    <th>Model</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>total_gross_profit</code></td>
+                    <td>sale.order</td>
+                    <td>Sum of (Unit Price - Cost Price) × Qty for all line items</td>
+                </tr>
+                <tr>
+                    <td><code>gross_profit_amount</code></td>
+                    <td>referral.commission</td>
+                    <td>Gross profit base used for commission calculation</td>
+                </tr>
+                <tr>
+                    <td><code>profit_margin_percent</code></td>
+                    <td>referral.commission</td>
+                    <td>Transaction profit margin percentage: (Gross Profit / Total Amount) × 100</td>
+                </tr>
+                <tr>
+                    <td><code>net_profit_after_commission</code></td>
+                    <td>referral.commission</td>
+                    <td>Net profit remaining after commission: Gross Profit - Commission Amount</td>
+                </tr>
             </table>
         </div>
     </div>
